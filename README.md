@@ -15,7 +15,7 @@
 
 </div>
 
-> **About this repo.** Analytics Studio is an AI product I designed and built at work (Aug 2025 – Oct 2026) for restaurant clients. This repository is a **clean-room reference implementation**, written from scratch to show the architecture and engineering decisions. It contains **no company code, brand, client names, credentials or data**. Everything runs on a synthetic dataset (two fictional restaurant brands, five branches). Open `demo/index.html` and it works.
+> **About this repo.** Analytics Studio is an AI product I designed and built at work (Aug 2025 – Oct 2026) for restaurant clients. This repository is a **clean-room reference implementation**, written from scratch to show the architecture and engineering decisions. It contains **no company code, brand, client names, credentials or data**. Everything runs on a synthetic dataset (two fictional restaurant brands, five branches). **Download [`analytics-studio-demo.html`](analytics-studio-demo.html) and open it: one file, no setup, no API key.** The demo uses the same layout and workflow as the production Studio.
 
 ---
 
@@ -392,16 +392,24 @@ All screenshots come from this repository's demo on synthetic data.
 
 ## ▶️ Run the demo
 
-No build step and no dependencies.
+**Quickest:** download [`analytics-studio-demo.html`](analytics-studio-demo.html) (one self-contained file) and double-click it.
+
+**From source** (no build step, no dependencies):
 
 ```bash
 git clone https://github.com/suyogpatil395/analytics-studio.git
 cd analytics-studio
-python3 -m http.server 8000      # or just open demo/index.html in a browser
-# open http://localhost:8000/demo/
+python3 -m http.server 8000          # then open http://localhost:8000/demo/
+python3 build-standalone.py          # regenerates analytics-studio-demo.html after code changes
 ```
 
-Try the example chips, then the **quick edits** (watch the pipeline panel: *Local edit, no AI call*), click a bar to drill down, and open **Report spec** to see exactly what the AI produces.
+**What to try:**
+1. **Pinned filters**: change Restaurant, Branch, Channel or Date range at the top; the preview re-runs (no AI call).
+2. **Describe a report**, or click a chip such as *Top 10 selling items* or *Profit by product*.
+3. **Ask for changes** in plain words: *make it a pie*, *top 5*, *only Zomato*, *last month*, *compare*. These are handled as local edits with zero AI calls.
+4. **Click a bar or pie slice** to drill down.
+5. Open **How this report was built** to see the pipeline timings, the JSON report spec and the planner prompt.
+6. **Export** (CSV, Excel, JSON, Web page), **Add to dashboard**, **Save a schedule**, or use the **✦ assistant** in the corner.
 
 ### Connect a real LLM and real data
 
@@ -424,8 +432,10 @@ Details: [`docs/connect-real-data.md`](docs/connect-real-data.md)
 
 ```text
 analytics-studio/
+├── analytics-studio-demo.html  # ⭐ one-file demo (generated), just open it
+├── build-standalone.py       # inlines src/*.js into the one-file demo
 ├── demo/
-│   └── index.html            # the app UI (no build step)
+│   └── index.html            # the Studio UI: filter bar, requirement box, preview, file type, schedule
 ├── src/
 │   ├── semantic-layer.js     # synthetic metrics views + query engine (stand-in for the real layer)
 │   ├── mcp-adapter.js        # single data gateway: demo or real MCP, with session cache
@@ -435,7 +445,7 @@ analytics-studio/
 │   ├── engine.js             # parallel execution, comparisons, deep-dive joins
 │   ├── insights.js           # "what changed" generation
 │   ├── render.js             # KPIs, SVG charts, tables, drill-down, CSV
-│   └── app.js                # pipeline wiring + step trace
+│   └── app.js                # UI: pinned filters, preview, exports, schedules, dashboards, assistant
 ├── examples/
 │   ├── channel-report.json   # sample specs
 │   ├── profit-join.json

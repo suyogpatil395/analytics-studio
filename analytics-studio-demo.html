@@ -1,0 +1,1211 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Analytics Studio · Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
+<style>
+:root{--bg:#f5f6f8;--card:#fff;--ink:#16181d;--muted:#6b7280;--line:#e5e7eb;--accent:#22a45d;--accent-ink:#fff;--accent-soft:#eaf7ef;--up:#15803d;--down:#c0262d;--warn:#fff4e5;--field:#fff;
+  --f:"Poppins","Segoe UI",system-ui,sans-serif;--mono:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace}
+:root[data-theme="dark"]{--bg:#0f1214;--card:#171b1f;--ink:#e8eaed;--muted:#9aa3ad;--line:#2a3036;--accent:#3ccf7d;--accent-ink:#06210f;--accent-soft:#12291c;--up:#4ade80;--down:#f87171;--warn:#2b2312;--field:#111518;color-scheme:dark}
+*{box-sizing:border-box}html,body{margin:0}body{background:var(--bg);color:var(--ink);font:14px/1.5 var(--f)}
+button,select,input,textarea{font:inherit;color:inherit}
+.top{background:var(--card);border-bottom:1px solid var(--line)}
+.top .in{max-width:1180px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:14px}
+.mark{width:30px;height:30px;border-radius:9px;background:conic-gradient(from 210deg,var(--accent),#0ea5e9,var(--accent));display:grid;place-items:center;color:#fff;font-weight:700;font-size:15px}
+.brand{font-weight:600;font-size:17px}.brand small{color:var(--muted);font-weight:400;border-left:1px solid var(--line);padding-left:12px;margin-left:4px;font-size:15px}
+.sp{flex:1}.live{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px}.live i{width:8px;height:8px;border-radius:50%;background:#f59e0b}
+.ico{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--card);display:grid;place-items:center;cursor:pointer}
+.ico:hover{border-color:var(--accent)}.ico svg{width:16px;height:16px}
+.fbar{background:var(--card);border-bottom:1px solid var(--line)}.fbar .in{max-width:1180px;margin:0 auto;padding:10px 20px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.fsel{position:relative;border:1px solid var(--line);border-radius:10px;padding:6px 12px;background:var(--field)}
+.fsel label{display:block;font-size:11px;color:var(--muted)}.fsel select{width:100%;border:0;background:transparent;font-weight:500;font-size:14px;padding:0;appearance:none;cursor:pointer;outline:none}
+.fsel::after{content:"";position:absolute;right:14px;top:22px;width:7px;height:7px;border-right:1.6px solid var(--muted);border-bottom:1.6px solid var(--muted);transform:rotate(45deg)}
+.page{max-width:1180px;margin:0 auto;padding:18px 20px 80px;display:flex;flex-direction:column;gap:18px}
+.note{background:var(--accent-soft);color:var(--accent);border-radius:10px;padding:9px 14px;font-size:13px;text-align:center}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+.card.focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.head{display:flex;gap:12px;align-items:flex-start;margin-bottom:14px}.num{width:24px;height:24px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-weight:600;font-size:12px;display:grid;place-items:center;flex:none;margin-top:3px}
+.head h2{margin:0;font-size:17px;font-weight:600}.head p{margin:0;color:var(--muted);font-size:13px}.head .sp{flex:1}
+.ta{border:1px solid var(--line);border-radius:12px;background:var(--field)}.ta textarea{width:100%;min-height:110px;border:0;background:transparent;padding:14px 16px;resize:vertical;outline:none;font-size:14.5px}
+.ta .bar{display:flex;align-items:center;gap:8px;padding:8px 10px 10px 16px}.ta .bar small{color:var(--muted);flex:1}
+.go{background:var(--accent);color:var(--accent-ink);border:0;border-radius:10px;padding:10px 18px;font-weight:600;cursor:pointer}.go:hover{filter:brightness(1.05)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:5px 13px;font-size:13px;cursor:pointer}.chip:hover{border-color:var(--accent);color:var(--accent)}
+.pv-tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.pv-tools select,.btn{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:6px 10px;font-size:13px;cursor:pointer}
+.btn:hover{border-color:var(--accent)}.btn.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.empty{border:1.5px dashed var(--line);border-radius:12px;padding:28px;text-align:center;color:var(--muted)}.empty b{color:var(--ink);display:block;margin-bottom:4px}
+#preview{display:flex;flex-direction:column;gap:14px}
+.rtitle{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}.rtitle h3{margin:0;font-size:20px}.rtitle span{color:var(--muted);font-size:12.5px}
+.active{display:flex;gap:6px;flex-wrap:wrap}.pill{background:var(--accent-soft);color:var(--accent);border-radius:999px;padding:2px 10px;font-size:12px;font-weight:500}.pill button{border:0;background:none;color:inherit;cursor:pointer;padding:0 0 0 4px}
+.ins{border:1px solid var(--line);border-radius:12px;padding:12px 16px;background:var(--bg)}.ins b{font-size:13px}.ins ul{margin:6px 0 0;padding-left:18px}
+.ins li.up::marker{content:"▲  ";color:var(--up)}.ins li.down::marker{content:"▼  ";color:var(--down)}.ins li.info::marker{content:"●  ";color:var(--accent)}
+.warn{background:var(--warn);border-radius:8px;padding:7px 12px;font-size:13px}
+/* report blocks (render.js) */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}.kpi{border:1px solid var(--line);border-radius:12px;padding:12px 16px;background:var(--card)}
+.kl{color:var(--muted);font-size:12px}.kv{font-size:25px;font-weight:600}.kd{font-size:12px}.muted{color:var(--muted)}
+.delta.up{color:var(--up);font-weight:600}.delta.down{color:var(--down);font-weight:600}
+.blk .card{padding:14px 16px;border-radius:12px}.blk .card header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}.blk .card h3{margin:0;font-size:14px;font-weight:600}
+.blk .ghost{border:1px solid var(--line);background:none;border-radius:6px;padding:2px 9px;font-size:12px;color:var(--muted);cursor:pointer}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:14px}@media (max-width:520px){.grid2{grid-template-columns:1fr}}
+svg.chart{width:100%;height:auto}.grid{stroke:var(--line)}.ax{fill:var(--muted);font-size:10px}.line{fill:none;stroke:var(--accent);stroke-width:2.2}.area{fill:var(--accent);opacity:.09}.prev{fill:none;stroke:var(--muted);stroke-width:1.4;stroke-dasharray:4 3}
+.legend{font-size:12px;color:var(--muted);display:flex;gap:6px;align-items:center}.sw{display:inline-block;width:10px;height:10px;border-radius:2px;margin-left:8px}.sw.cur{background:var(--accent)}.sw.prv{background:var(--muted)}
+.bars{display:grid;gap:4px}.bars .bar{display:grid;grid-template-columns:140px 1fr 92px;gap:10px;align-items:center;background:none;border:0;padding:3px 0;text-align:left;cursor:pointer}
+.bl{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13px}.bt{background:var(--bg);border-radius:4px;height:14px;overflow:hidden}.bf{display:block;height:100%;background:var(--accent);border-radius:4px}.bv{text-align:right;font:12px var(--mono)}
+.pie{display:flex;gap:16px;align-items:center;flex-wrap:wrap}.donut{width:180px}.slice{cursor:pointer;stroke:var(--card);stroke-width:2}.pleg{display:grid;gap:4px;font-size:13px}
+.tw{overflow:auto;max-height:420px}table{border-collapse:collapse;width:100%;font-size:13px}th{position:sticky;top:0;background:var(--card);text-align:left;color:var(--muted);font-weight:500;cursor:pointer;border-bottom:1px solid var(--line);padding:6px 8px;white-space:nowrap}
+td{padding:6px 8px;border-bottom:1px solid var(--line);white-space:nowrap}td.n{text-align:right;font-variant-numeric:tabular-nums}
+.joinnote{font-size:12px;padding:6px 10px;border-radius:6px;margin-bottom:8px}.joinnote.ok{background:var(--accent-soft);color:var(--accent)}.joinnote.bad{background:var(--warn);color:var(--down)}.err{background:var(--warn);padding:8px;border-radius:8px}
+/* themes */
+#preview.t-midnight{--accent:#6366f1;--accent-soft:#eef0ff}#preview.t-ocean{--accent:#0284c7;--accent-soft:#e6f4fb}#preview.t-sunset{--accent:#ea580c;--accent-soft:#fff1e8}
+details.how{border-top:1px solid var(--line);padding-top:10px}details.how summary{cursor:pointer;color:var(--muted);font-size:13px}
+.steps{display:grid;gap:6px;margin:10px 0}.step{display:grid;grid-template-columns:22px 1fr auto;gap:8px;font-size:13px}.step b{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-size:11px}.step .t{font:12px var(--mono);color:var(--muted)}
+pre.spec{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px;font:11.5px/1.45 var(--mono);overflow:auto;max-height:320px}
+.types{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}@media (max-width:900px){.types{grid-template-columns:repeat(3,1fr)}}
+.type{border:1px solid var(--line);border-radius:10px;padding:12px;cursor:pointer;background:var(--card);text-align:left}.type b{display:block;font-weight:600}.type small{color:var(--muted);font-size:12px}
+.type.on{background:var(--accent-soft);border-color:var(--accent)}
+.rowx{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:14px;flex-wrap:wrap}.rowx small{color:var(--muted)}
+.dl{background:var(--accent);color:var(--accent-ink);border:0;border-radius:10px;padding:9px 16px;font-weight:600;cursor:pointer}.dl:disabled{background:var(--line);color:var(--muted);cursor:not-allowed}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:24px}@media (max-width:820px){.two{grid-template-columns:1fr}}
+.two h4{margin:0 0 8px;font-size:14px;font-weight:600}.fl{display:block;font-size:12px;color:var(--muted);margin:10px 0 4px}
+.inp{width:100%;border:1px solid var(--line);border-radius:10px;padding:9px 12px;background:var(--field)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}.seg button{border:0;background:var(--card);padding:7px 14px;cursor:pointer;border-right:1px solid var(--line)}.seg button:last-child{border-right:0}.seg button.on{background:var(--accent);color:var(--accent-ink)}
+.planned{color:var(--accent);font-size:13px;font-weight:500;margin-top:10px}
+.saved{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}.saved .it{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid var(--line);font-size:13px}
+.fab{position:fixed;right:24px;bottom:24px;width:56px;height:56px;border-radius:50%;background:var(--accent);color:var(--accent-ink);border:0;box-shadow:0 8px 24px rgba(0,0,0,.18);cursor:pointer;font-size:22px}
+.chat{position:fixed;right:24px;bottom:92px;width:min(360px,calc(100vw - 32px));background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 12px 32px rgba(0,0,0,.18);display:flex;flex-direction:column;max-height:60vh}
+.chat header{padding:12px 14px;border-bottom:1px solid var(--line);font-weight:600;display:flex;justify-content:space-between}.chat .msgs{padding:12px;overflow:auto;display:flex;flex-direction:column;gap:8px;flex:1}
+.bub{padding:8px 11px;border-radius:12px;font-size:13px;max-width:85%}.bub.me{background:var(--accent);color:var(--accent-ink);align-self:flex-end}.bub.bot{background:var(--bg);align-self:flex-start}
+.chat form{display:flex;gap:6px;padding:10px;border-top:1px solid var(--line)}.chat input{flex:1}
+.drawer{position:fixed;inset:0 0 0 auto;width:min(380px,100%);background:var(--card);border-left:1px solid var(--line);z-index:30;padding:18px;overflow:auto;box-shadow:-12px 0 30px rgba(0,0,0,.12)}
+.drawer h3{margin:0 0 6px}.drawer h4{margin:16px 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}.drawer .it{display:flex;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:1px solid var(--line);font-size:13px}
+.drawer .it button{border:0;background:none;color:var(--accent);cursor:pointer}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:var(--card);padding:8px 16px;border-radius:999px;font-size:13px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:40}.toast.on{opacity:1}
+@media (max-width:820px){.fbar .in{grid-template-columns:1fr 1fr}.live{display:none}}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<header class="top"><div class="in">
+  <div class="mark">A</div><div class="brand">Analytics <small>Studio</small></div>
+  <span class="sp"></span>
+  <span class="live"><i></i>Demo mode · synthetic data</span>
+  <button class="ico" id="refresh" type="button" title="Refresh live data"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg></button>
+  <button class="ico" id="themeBtn" type="button" title="Dark / light mode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+  <button class="ico" id="menuBtn" type="button" title="Dashboards, schedules and history"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</div></header>
+<div class="fbar"><div class="in">
+  <div class="fsel"><label for="fRestaurant">Restaurant</label><select id="fRestaurant"></select></div>
+  <div class="fsel"><label for="fBranch">Branch</label><select id="fBranch"></select></div>
+  <div class="fsel"><label for="fChannel">Channel</label><select id="fChannel"></select></div>
+  <div class="fsel"><label for="fDate">Date range</label><select id="fDate">
+    <option value="yesterday">Yesterday</option><option value="last_7_days">Last 7 days</option><option value="last_30_days" selected>Last 30 days</option>
+    <option value="this_month">This month</option><option value="last_month">Last month</option><option value="last_90_days">Last 90 days</option></select></div>
+</div></div>
+
+<main class="page">
+  <div class="note">Demo build: same workflow as the production Studio, running on a synthetic two-brand restaurant dataset in your browser. No AI key needed.</div>
+
+  <section class="card" id="c1">
+    <div class="head"><span class="num">1</span><div><h2>Describe the report you need</h2><p>Name the columns, groupings, charts and file type in your own words.</p></div></div>
+    <div class="ta">
+      <textarea id="prompt" aria-label="Report requirement" placeholder="Type or drop a requirement file (.md, .txt) here. Example: I want a branch-wise sales report with Orders, Revenue and Avg ticket, sorted by revenue, with a bar chart of revenue by branch."></textarea>
+      <div class="bar"><small>Filters above are applied automatically.</small>
+        <button class="ico" id="histBtn" type="button" title="Prompt history"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></svg></button>
+        <label class="ico" title="Upload a requirement file (.md, .txt, .csv)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.4 11 12.2 20.2a6 6 0 0 1-8.5-8.5l9.2-9.2a4 4 0 0 1 5.7 5.7l-9.2 9.2a2 2 0 0 1-2.8-2.8l8.5-8.5"/></svg><input type="file" id="file" accept=".md,.txt,.csv" hidden></label>
+        <button class="go" id="go" type="button">Build preview</button>
+      </div>
+    </div>
+    <div class="chips" id="examples"></div>
+  </section>
+
+  <section class="card focus" id="c2">
+    <div class="head"><span class="num">2</span><div><h2>Preview</h2><p>Live data for the filters pinned at the top.</p></div><span class="sp"></span>
+      <div class="pv-tools">
+        <select id="compare" aria-label="Compare"><option value="">Compare: off</option><option value="previous_period">vs Previous period</option><option value="previous_week">vs Last week</option><option value="previous_year">vs Same period last year</option></select>
+        <select id="theme" aria-label="Preview theme"><option value="">🎨 Default</option><option value="midnight">🎨 Midnight</option><option value="ocean">🎨 Ocean</option><option value="sunset">🎨 Sunset</option></select>
+      </div></div>
+    <div id="preview"><div class="empty"><b>Your preview will appear here</b>Write a requirement above and select Build preview. To change it, ask in plain words: "make it a pie", "top 5", "only Zomato".</div></div>
+  </section>
+
+  <section class="card" id="c3">
+    <div class="head"><span class="num">3</span><div><h2>File type</h2><p>Used for downloads and email attachments.</p></div></div>
+    <div class="types" id="types"></div>
+    <div class="rowx"><small>Files include every row for the pinned filters. In this demo, CSV, Excel, JSON and Web page download for real; PDF and Power BI exports are part of the production build.</small><button class="dl" id="download" type="button" disabled>Download file</button></div>
+  </section>
+
+  <section class="card" id="c4">
+    <div class="head"><span class="num">4</span><div><h2>Schedule and send</h2><p>Save a schedule; in production a scheduled task re-runs the saved report spec on fresh data and delivers it.</p></div></div>
+    <div class="two">
+      <div><h4>Report data</h4>
+        <label class="fl" for="sDates">Report dates</label><select class="inp" id="sDates"><option value="yesterday">Yesterday</option><option value="last_7_days" selected>Last 7 days</option><option value="last_month">Last month</option></select>
+        <label class="fl">Reports</label><div id="sReports" class="muted">Build a preview first.</div>
+      </div>
+      <div><h4>Delivery</h4>
+        <label class="fl" for="sAs">Deliver as</label><select class="inp" id="sAs"><option>Email with file</option><option>Slack message + file</option><option>Google Sheets (append)</option><option>Daily digest (one email, all reports)</option></select>
+        <label class="fl" for="sTo">Recipients</label><input class="inp" id="sTo" placeholder="name@company.com or #channel">
+        <label class="fl">Repeat</label><div class="seg" id="sRepeat"><button type="button" class="on">Once</button><button type="button">Daily</button><button type="button">Weekly</button><button type="button">Monthly</button></div>
+        <div class="two" style="gap:10px;grid-template-columns:1fr 1fr"><div><label class="fl" for="sTime">Time</label><input class="inp" type="time" id="sTime" value="09:00"></div>
+          <div><label class="fl" for="sTz">Time zone</label><select class="inp" id="sTz"><option>Asia/Kolkata (IST)</option><option>America/Mexico_City (CST)</option><option>UTC</option></select></div></div>
+        <div class="planned" id="planned"></div>
+        <div class="rowx" style="justify-content:flex-end"><button class="dl" id="saveSched" type="button">Save schedule</button></div>
+      </div>
+    </div>
+    <div class="saved" id="savedList" hidden></div>
+  </section>
+</main>
+
+<button class="fab" id="fab" type="button" title="Assistant">✦</button>
+<div class="chat" id="chat" hidden><header>Studio Assistant<button class="btn" id="closeChat" type="button">×</button></header>
+  <div class="msgs" id="msgs"><div class="bub bot">Hi! Ask me for a report ("top 10 dishes last month") or a change ("only Swiggy", "make it a pie", "save to dashboard").</div></div>
+  <form id="chatForm"><input class="inp" id="chatIn" placeholder="Ask the assistant…" autocomplete="off"><button class="go" type="submit">Send</button></form></div>
+<aside class="drawer" id="drawer" hidden><div style="display:flex;justify-content:space-between;align-items:center"><h3>Menu</h3><button class="btn" id="closeDrawer" type="button">Close</button></div>
+  <h4>Dashboards</h4><div id="dList"></div><button class="btn" id="saveDash" type="button" style="margin-top:8px">＋ Add current report to dashboard</button>
+  <h4>Saved schedules</h4><div id="schList"></div><h4>Prompt history</h4><div id="hList"></div></aside>
+<div class="toast" id="toast"></div>
+
+<script>
+/**
+ * semantic-layer.js
+ * ------------------------------------------------------------------
+ * A tiny in-browser stand-in for a real semantic layer (e.g. Rill metrics
+ * views served over MCP). It exposes the same three operations the Studio
+ * relies on in production:
+ *
+ *   listMetricsViews()            -> [{ name, description }]
+ *   getMetricsView(name)          -> { name, measures[], dimensions[], timeDimension }
+ *   queryMetricsView(args)        -> { rows: [...], meta: {...} }
+ *
+ * The query arguments mirror a metrics-view query API:
+ *   { metrics_view, measures:[{name}], dimensions:[{name}],
+ *     time_range:{start,end}, where:[{dimension,op,values}],
+ *     sort:[{name,desc}], limit, time_grain }
+ *
+ * The data is synthetic: two fictional restaurant brands, five branches.
+ * Swap this file for an MCP adapter (see mcp-adapter.js) to run on real data.
+ */
+(function (AS) {
+  "use strict";
+
+  // ---------- deterministic synthetic data ----------
+  function rng(seed) { return function () { seed |= 0; seed = seed + 0x6D2B79F5 | 0; var t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  var BRANCHES = [
+    { branch: "Baner", restaurant: "Tandoor Tales", city: "Pune", base: 18 },
+    { branch: "Koregaon Park", restaurant: "Tandoor Tales", city: "Pune", base: 14 },
+    { branch: "Andheri", restaurant: "Tandoor Tales", city: "Mumbai", base: 20 },
+    { branch: "Bandra", restaurant: "Wok Street", city: "Mumbai", base: 16 },
+    { branch: "Viman Nagar", restaurant: "Wok Street", city: "Pune", base: 11 }
+  ];
+  var MENU = {
+    "Tandoor Tales": [["Butter Chicken", "Main Course", 420, 160, 3], ["Paneer Tikka", "Starters", 280, 95, 2.2], ["Dal Makhani", "Main Course", 300, 85, 1.8],
+      ["Butter Naan", "Breads", 60, 14, 4], ["Garlic Naan", "Breads", 80, 18, 1.4], ["Jeera Rice", "Rice", 180, 45, 1.3], ["Sweet Lassi", "Beverages", 110, 30, 1], ["Gulab Jamun", "Desserts", 120, 35, 1]],
+    "Wok Street": [["Hakka Noodles", "Main Course", 240, 70, 3], ["Schezwan Fried Rice", "Rice", 260, 75, 2.6], ["Chicken Momos", "Starters", 240, 85, 2.4], ["Veg Manchurian", "Starters", 260, 80, 2],
+      ["Chilli Chicken", "Starters", 340, 125, 1.6], ["Iced Tea", "Beverages", 120, 25, 1.5], ["Brownie", "Desserts", 160, 50, 1]]
+  };
+  var CHANNELS = [["Dine-in", .38], ["Takeaway", .14], ["Swiggy", .26], ["Zomato", .22]];
+  var DATA_END = "2026-10-24";
+
+  function pad(n) { return (n < 10 ? "0" : "") + n; }
+  function fmtDate(d) { return d.getUTCFullYear() + "-" + pad(d.getUTCMonth() + 1) + "-" + pad(d.getUTCDate()); }
+  function pick(r, arr, wIdx) { var tot = 0, i; for (i = 0; i < arr.length; i++) tot += arr[i][wIdx]; var x = r() * tot; for (i = 0; i < arr.length; i++) { x -= arr[i][wIdx]; if (x <= 0) return arr[i]; } return arr[arr.length - 1]; }
+
+  function generate() {
+    var r = rng(42), orders = [], items = [], oid = 1;
+    var start = Date.UTC(2026, 6, 1), end = Date.UTC(2026, 9, 24);
+    for (var t = start; t <= end; t += 86400000) {
+      var d = new Date(t), dow = d.getUTCDay(), wk = dow === 0 || dow === 6 ? 1.35 : dow === 5 ? 1.15 : 1;
+      BRANCHES.forEach(function (b) {
+        var n = Math.round(b.base * wk * (0.7 + r() * 0.6));
+        for (var k = 0; k < n; k++) {
+          var x = r(), hour = x < .4 ? 12 + Math.floor(r() * 3) : x < .5 ? 15 + Math.floor(r() * 4) : 19 + Math.floor(r() * 4);
+          var ch = pick(r, CHANNELS, 1)[0], status = r() < .93 ? "completed" : "cancelled";
+          var gross = 0, lines = 1 + Math.floor(r() * 3);
+          for (var l = 0; l < lines; l++) {
+            var m = pick(r, MENU[b.restaurant], 4), q = 1 + (r() < .25 ? 1 : 0) + (m[1] === "Breads" && r() < .5 ? 1 : 0);
+            items.push({ order_id: oid, date: fmtDate(d), branch: b.branch, restaurant: b.restaurant, channel: ch, status: status, product: m[0], category: m[1], qty: q, revenue: q * m[2], food_cost: q * m[3] });
+            gross += q * m[2];
+          }
+          var disc = r() < .25 ? Math.round(gross * (.05 + r() * .12)) : 0;
+          orders.push({ order_id: oid++, date: fmtDate(d), hour: hour, weekday: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][dow], branch: b.branch, restaurant: b.restaurant, city: b.city,
+            channel: ch, payment_method: ch === "Swiggy" || ch === "Zomato" ? "Online" : (r() < .55 ? "UPI" : r() < .6 ? "Card" : "Cash"), status: status,
+            customer_id: r() < .65 ? 1 + Math.floor(Math.pow(r(), 2) * 900) : null, net_amount: Math.round((gross - disc) * 1.05), discount: disc });
+        }
+      });
+    }
+    return { orders: orders, items: items };
+  }
+  var DATA = generate();
+
+  // ---------- metrics views (the semantic layer definitions) ----------
+  // Each measure is defined ONCE: reducer over the rows of the view.
+  function sum(f) { return function (rows) { var s = 0; for (var i = 0; i < rows.length; i++) s += rows[i][f] || 0; return s; }; }
+  function completed(fn) { return function (rows) { return fn(rows.filter(function (x) { return x.status === "completed"; })); }; }
+  function distinct(f) { return function (rows) { var s = {}; rows.forEach(function (x) { if (x[f] != null) s[x[f]] = 1; }); return Object.keys(s).length; }; }
+
+  var VIEWS = {
+    orders: {
+      description: "Bill-level sales. One row = one bill. Use for revenue, orders, AOV, discounts, customers, channels, branches, hours.",
+      table: "orders", timeDimension: "date",
+      measures: {
+        revenue: { label: "Revenue", desc: "Net sales of completed bills (after discount, incl. tax)", format: "currency", fn: completed(sum("net_amount")) },
+        orders: { label: "Orders", desc: "Number of completed bills", format: "number", fn: function (rows) { return rows.filter(function (x) { return x.status === "completed"; }).length; } },
+        aov: { label: "Avg order value", desc: "Revenue / Orders", format: "currency", fn: function (rows) { var c = rows.filter(function (x) { return x.status === "completed"; }); return c.length ? sum("net_amount")(c) / c.length : null; } },
+        discount: { label: "Discount", desc: "Discount given on completed bills", format: "currency", fn: completed(sum("discount")) },
+        customers: { label: "Customers", desc: "Unique identified customers", format: "number", fn: distinct("customer_id") },
+        cancel_rate: { label: "Cancellation rate", desc: "Cancelled bills / all bills", format: "percent", fn: function (rows) { return rows.length ? rows.filter(function (x) { return x.status === "cancelled"; }).length / rows.length : null; } }
+      },
+      dimensions: { restaurant: "Restaurant brand", branch: "Branch / outlet", city: "City", channel: "Sales channel (Dine-in, Takeaway, Swiggy, Zomato)", payment_method: "Payment method", hour: "Hour of day", weekday: "Day of week", status: "Bill status" }
+    },
+    item_sales: {
+      description: "Menu performance. One row = one line on a bill. Use for products, categories, quantities, item revenue.",
+      table: "items", timeDimension: "date",
+      measures: {
+        qty_sold: { label: "Qty sold", desc: "Units sold on completed bills", format: "number", fn: completed(sum("qty")) },
+        item_revenue: { label: "Item revenue", desc: "Qty x menu price on completed bills", format: "currency", fn: completed(sum("revenue")) }
+      },
+      dimensions: { restaurant: "Restaurant brand", branch: "Branch / outlet", product: "Menu item", category: "Menu category", channel: "Sales channel" }
+    },
+    recipe_costs: {
+      description: "Food cost from recipes. One row = one line on a bill, costed at recipe cost. Use with item_sales for margin / profit.",
+      table: "items", timeDimension: "date",
+      measures: {
+        food_cost: { label: "Food cost", desc: "Qty x recipe cost on completed bills", format: "currency", fn: completed(sum("food_cost")) }
+      },
+      dimensions: { restaurant: "Restaurant brand", branch: "Branch / outlet", product: "Menu item", category: "Menu category" }
+    }
+  };
+
+  function listMetricsViews() { return Object.keys(VIEWS).map(function (k) { return { name: k, description: VIEWS[k].description }; }); }
+  function getMetricsView(name) {
+    var v = VIEWS[name]; if (!v) throw new Error("Unknown metrics view: " + name);
+    return { name: name, description: v.description, timeDimension: v.timeDimension,
+      measures: Object.keys(v.measures).map(function (m) { return { name: m, label: v.measures[m].label, description: v.measures[m].desc, format: v.measures[m].format }; }),
+      dimensions: Object.keys(v.dimensions).map(function (d) { return { name: d, description: v.dimensions[d] }; }) };
+  }
+  function dimensionValues(view, dim) { var s = {}; DATA[VIEWS[view].table].forEach(function (r) { s[r[dim]] = 1; }); return Object.keys(s); }
+
+  /** Row-level security: in production the semantic layer applies this per user. */
+  var SESSION = { allowedRestaurants: null }; // null = admin (all)
+  function setUserAccess(restaurants) { SESSION.allowedRestaurants = restaurants; }
+
+  function queryMetricsView(args) {
+    var t0 = Date.now(), v = VIEWS[args.metrics_view];
+    if (!v) throw new Error("Unknown metrics view: " + args.metrics_view);
+    var rows = DATA[v.table];
+    if (SESSION.allowedRestaurants) rows = rows.filter(function (r) { return SESSION.allowedRestaurants.indexOf(r.restaurant) >= 0; });
+    if (args.time_range) rows = rows.filter(function (r) { return r.date >= args.time_range.start && r.date < args.time_range.end; });
+    (args.where || []).forEach(function (w) {
+      if (!(w.dimension in v.dimensions)) throw new Error("Dimension '" + w.dimension + "' is not in " + args.metrics_view);
+      rows = rows.filter(function (r) { var hit = w.values.indexOf(String(r[w.dimension])) >= 0; return w.op === "not_in" ? !hit : hit; });
+    });
+    var dims = (args.dimensions || []).map(function (d) { return d.name; });
+    dims.forEach(function (d) { if (d !== "__time" && !(d in v.dimensions)) throw new Error("Dimension '" + d + "' is not in " + args.metrics_view); });
+    var meas = (args.measures || []).map(function (m) { if (!v.measures[m.name]) throw new Error("Measure '" + m.name + "' is not in " + args.metrics_view); return m.name; });
+    var grain = args.time_grain || "day";
+    function timeKey(date) {
+      if (grain === "month") return date.slice(0, 7) + "-01";
+      if (grain === "week") { var d = new Date(date + "T00:00:00Z"), dow = (d.getUTCDay() + 6) % 7; return fmtDate(new Date(d.getTime() - dow * 86400000)); }
+      return date;
+    }
+    var groups = {}, order = [];
+    rows.forEach(function (r) {
+      var key = dims.map(function (d) { return d === "__time" ? timeKey(r.date) : r[d]; }).join("\u0001");
+      if (!groups[key]) { groups[key] = []; order.push(key); }
+      groups[key].push(r);
+    });
+    if (!dims.length && !order.length) { groups[""] = []; order.push(""); }
+    var out = order.map(function (key) {
+      var parts = key.split("\u0001"), row = {};
+      dims.forEach(function (d, i) { row[d] = parts[i]; });
+      meas.forEach(function (m) { row[m] = v.measures[m].fn(groups[key]); });
+      return row;
+    });
+    (args.sort || []).slice().reverse().forEach(function (s) {
+      out.sort(function (a, b) { var x = a[s.name], y = b[s.name]; if (x === y) return 0; var c = x > y ? 1 : -1; return s.desc ? -c : c; });
+    });
+    if (args.limit) out = out.slice(0, args.limit);
+    return { rows: out, meta: { metrics_view: args.metrics_view, scanned: rows.length, ms: Date.now() - t0 } };
+  }
+
+  AS.semantic = { listMetricsViews: listMetricsViews, getMetricsView: getMetricsView, queryMetricsView: queryMetricsView,
+    dimensionValues: dimensionValues, setUserAccess: setUserAccess, DATA_END: DATA_END, formats: function (view, m) { return VIEWS[view] && VIEWS[view].measures[m] ? VIEWS[view].measures[m].format : "number"; } };
+})(window.AS = window.AS || {});
+
+</script>
+<script>
+/**
+ * mcp-adapter.js
+ * ------------------------------------------------------------------
+ * The ONLY place the Studio touches data. Everything else calls
+ * AS.data.query(...) and never knows where the numbers come from.
+ *
+ * Two backends:
+ *   1. "demo"  -> the in-browser synthetic semantic layer (semantic-layer.js)
+ *   2. "mcp"   -> a real semantic layer exposed as MCP tools, e.g.
+ *                 list_metrics_views / get_metrics_view / query_metrics_view.
+ *                 The host app provides `callTool(name, args)`; the user's own
+ *                 login is used, so row-level security is enforced at the source.
+ *
+ * Results are cached per (tool, args) for the session so re-renders,
+ * theme changes and drill-down "back" never re-query.
+ */
+(function (AS) {
+  "use strict";
+  var backend = "demo", callTool = null, cache = new Map(), stats = { queries: 0, cacheHits: 0 };
+
+  function useMcp(fn) { backend = "mcp"; callTool = fn; cache.clear(); }
+  function useDemo() { backend = "demo"; callTool = null; cache.clear(); }
+
+  function key(tool, args) { return tool + ":" + JSON.stringify(args); }
+
+  async function run(tool, args) {
+    var k = key(tool, args);
+    if (cache.has(k)) { stats.cacheHits++; return cache.get(k); }
+    stats.queries++;
+    var res;
+    if (backend === "demo") {
+      if (tool === "list_metrics_views") res = AS.semantic.listMetricsViews();
+      else if (tool === "get_metrics_view") res = AS.semantic.getMetricsView(args.metrics_view);
+      else if (tool === "query_metrics_view") res = AS.semantic.queryMetricsView(args);
+      else throw new Error("Unknown tool " + tool);
+    } else {
+      // Real MCP: tool results arrive as JSON text content.
+      var raw = await callTool(tool, args);
+      res = typeof raw === "string" ? JSON.parse(raw) : raw;
+      if (tool === "query_metrics_view" && Array.isArray(res.data)) res = { rows: res.data, meta: res.meta || {} };
+    }
+    cache.set(k, res);
+    return res;
+  }
+
+  AS.data = {
+    useMcp: useMcp, useDemo: useDemo, stats: stats,
+    listViews: function () { return run("list_metrics_views", {}); },
+    describe: function (view) { return run("get_metrics_view", { metrics_view: view }); },
+    query: function (args) { return run("query_metrics_view", args); },
+    backend: function () { return backend; }
+  };
+})(window.AS = window.AS || {});
+
+</script>
+<script>
+/**
+ * spec.js
+ * ------------------------------------------------------------------
+ * The REPORT SPEC is the contract between the AI and the app.
+ * The AI never writes SQL and never touches data. It only writes a small
+ * JSON document that says WHAT to show. The app validates it against the
+ * semantic layer catalog and decides HOW to fetch and draw it.
+ *
+ * {
+ *   "title": "Channel performance",
+ *   "date_range": { "preset": "last_7_days" } | { "start": "2026-10-01", "end": "2026-10-08" },
+ *   "compare": null | "previous_period" | "previous_week" | "previous_year",
+ *   "filters": [ { "dimension": "channel", "op": "in", "values": ["Swiggy"] } ],
+ *   "blocks": [
+ *     { "type": "kpi",   "view": "orders", "measures": ["revenue", "orders", "aov"] },
+ *     { "type": "chart", "view": "orders", "chart": "line|bar|pie", "measure": "revenue",
+ *       "dimension": "__time" | "<dimension>", "grain": "day|week|month", "limit": 10 },
+ *     { "type": "table", "view": "orders", "dimensions": ["branch"], "measures": ["revenue"],
+ *       "sort": { "by": "revenue", "desc": true }, "limit": 20 },
+ *     { "type": "join",  "title": "Profit by product",
+ *       "left":  { "view": "item_sales",   "dimensions": ["product"], "measures": ["item_revenue"] },
+ *       "right": { "view": "recipe_costs", "dimensions": ["product"], "measures": ["food_cost"] },
+ *       "on": ["product"],
+ *       "calc": [ { "name": "profit", "label": "Profit", "expr": "item_revenue - food_cost", "format": "currency" },
+ *                 { "name": "margin", "label": "Margin %", "expr": "(item_revenue - food_cost) / item_revenue", "format": "percent" } ],
+ *       "sort": { "by": "profit", "desc": true }, "limit": 15 }
+ *   ]
+ * }
+ */
+(function (AS) {
+  "use strict";
+  var PRESETS = ["today", "yesterday", "last_7_days", "last_14_days", "last_30_days", "this_month", "last_month", "last_90_days"];
+  var COMPARES = [null, "previous_period", "previous_week", "previous_year"];
+
+  function d(s) { return new Date(s + "T00:00:00Z"); }
+  function f(dt) { return dt.toISOString().slice(0, 10); }
+  function add(s, days) { return f(new Date(d(s).getTime() + days * 86400000)); }
+
+  /** Resolve a preset to a half-open [start, end) range relative to "today". */
+  function resolveRange(range, today) {
+    var end = add(today, 1);
+    if (range && range.start && range.end) return { start: range.start, end: range.end };
+    var p = (range && range.preset) || "last_30_days";
+    switch (p) {
+      case "today": return { start: today, end: end };
+      case "yesterday": return { start: add(today, -1), end: today };
+      case "last_7_days": return { start: add(today, -6), end: end };
+      case "last_14_days": return { start: add(today, -13), end: end };
+      case "last_90_days": return { start: add(today, -89), end: end };
+      case "this_month": return { start: today.slice(0, 8) + "01", end: end };
+      case "last_month": var first = today.slice(0, 8) + "01", prev = d(first); prev.setUTCMonth(prev.getUTCMonth() - 1); return { start: f(prev), end: first };
+      default: return { start: add(today, -29), end: end };
+    }
+  }
+  /** Comparison window of the same length. */
+  function compareRange(r, mode) {
+    if (!mode) return null;
+    var len = (d(r.end) - d(r.start)) / 86400000;
+    if (mode === "previous_week") return { start: add(r.start, -7), end: add(r.end, -7) };
+    if (mode === "previous_year") { var s = d(r.start), e = d(r.end); s.setUTCFullYear(s.getUTCFullYear() - 1); e.setUTCFullYear(e.getUTCFullYear() - 1); return { start: f(s), end: f(e) }; }
+    return { start: add(r.start, -len), end: r.start };
+  }
+
+  /**
+   * Validate + normalise a spec against the catalog.
+   * Returns { spec, errors[], warnings[] }. Invalid fields are dropped or
+   * repaired instead of failing the whole report, and every change is reported.
+   */
+  function validate(raw, catalog) {
+    var errors = [], warnings = [], s = JSON.parse(JSON.stringify(raw || {}));
+    s.title = s.title || "Untitled report";
+    if (s.date_range && s.date_range.preset && PRESETS.indexOf(s.date_range.preset) < 0) { warnings.push("Unknown date preset '" + s.date_range.preset + "', using last_30_days"); s.date_range = { preset: "last_30_days" }; }
+    s.date_range = s.date_range || { preset: "last_30_days" };
+    if (COMPARES.indexOf(s.compare || null) < 0) { warnings.push("Unknown compare mode, comparison turned off"); s.compare = null; }
+    s.compare = s.compare || null;
+
+    function view(name, where) { var v = catalog[name]; if (!v) errors.push(where + ": metrics view '" + name + "' does not exist"); return v; }
+    function hasM(v, m) { return v && v.measures.some(function (x) { return x.name === m; }); }
+    function hasD(v, dd) { return dd === "__time" || (v && v.dimensions.some(function (x) { return x.name === dd; })); }
+
+    s.filters = (s.filters || []).filter(function (fl) {
+      var ok = fl && fl.dimension && Array.isArray(fl.values) && fl.values.length;
+      if (!ok) warnings.push("Dropped an incomplete filter");
+      fl.op = fl.op === "not_in" ? "not_in" : "in";
+      return ok;
+    });
+
+    s.blocks = (s.blocks || []).filter(function (b, i) {
+      var where = "block " + (i + 1) + " (" + b.type + ")";
+      if (b.type === "kpi") {
+        var v = view(b.view, where); if (!v) return false;
+        b.measures = (b.measures || []).filter(function (m) { if (!hasM(v, m)) { warnings.push(where + ": dropped unknown measure '" + m + "'"); return false; } return true; });
+        return b.measures.length > 0;
+      }
+      if (b.type === "chart") {
+        var cv = view(b.view, where); if (!cv) return false;
+        if (!hasM(cv, b.measure)) { errors.push(where + ": unknown measure '" + b.measure + "'"); return false; }
+        b.dimension = b.dimension || "__time";
+        if (!hasD(cv, b.dimension)) { errors.push(where + ": unknown dimension '" + b.dimension + "'"); return false; }
+        b.chart = ["line", "bar", "pie"].indexOf(b.chart) >= 0 ? b.chart : (b.dimension === "__time" ? "line" : "bar");
+        if (b.dimension === "__time" && b.chart === "pie") { b.chart = "line"; warnings.push(where + ": a pie can't show a trend, switched to line"); }
+        b.grain = ["day", "week", "month"].indexOf(b.grain) >= 0 ? b.grain : "day";
+        b.limit = b.dimension === "__time" ? null : Math.min(b.limit || 10, 25);
+        return true;
+      }
+      if (b.type === "table") {
+        var tv = view(b.view, where); if (!tv) return false;
+        b.dimensions = (b.dimensions || []).filter(function (x) { return hasD(tv, x) && x !== "__time"; });
+        b.measures = (b.measures || []).filter(function (m) { return hasM(tv, m); });
+        if (!b.measures.length) { errors.push(where + ": table needs at least one valid measure"); return false; }
+        b.sort = b.sort && (b.measures.indexOf(b.sort.by) >= 0 || b.dimensions.indexOf(b.sort.by) >= 0) ? b.sort : { by: b.measures[0], desc: true };
+        b.limit = Math.min(b.limit || 50, 500);
+        return true;
+      }
+      if (b.type === "join") {
+        var lv = view(b.left && b.left.view, where + " left"), rv = view(b.right && b.right.view, where + " right");
+        if (!lv || !rv) return false;
+        b.on = (b.on || []).filter(function (k) { return hasD(lv, k) && hasD(rv, k); });
+        if (!b.on.length) { errors.push(where + ": no shared dimension to join on"); return false; }
+        b.left.dimensions = b.on.slice(); b.right.dimensions = b.on.slice();
+        b.left.measures = (b.left.measures || []).filter(function (m) { return hasM(lv, m); });
+        b.right.measures = (b.right.measures || []).filter(function (m) { return hasM(rv, m); });
+        b.calc = (b.calc || []).filter(function (c) { return c.name && /^[\w\s+\-*/().]+$/.test(c.expr || ""); });
+        b.limit = Math.min(b.limit || 20, 200);
+        return true;
+      }
+      warnings.push("Dropped unsupported block type '" + b.type + "'");
+      return false;
+    });
+    if (!s.blocks.length && !errors.length) errors.push("The plan has no blocks the data can answer");
+    return { spec: s, errors: errors, warnings: warnings };
+  }
+
+  AS.spec = { validate: validate, resolveRange: resolveRange, compareRange: compareRange, PRESETS: PRESETS };
+})(window.AS = window.AS || {});
+
+</script>
+<script>
+/**
+ * planner.js
+ * ------------------------------------------------------------------
+ * Turns a plain-language request into a REPORT SPEC (see spec.js).
+ *
+ * Production path (LLM):
+ *   1. buildCatalog()      -> compact text description of every metrics view
+ *   2. buildPrompt()       -> system rules + catalog + user request
+ *   3. llm(prompt)         -> JSON only
+ *   4. parse + validate    -> spec.js repairs or rejects invalid fields
+ *
+ * Demo path (offline):
+ *   offlinePlan() maps keywords to measures / dimensions / dates so the demo
+ *   runs with no API key. Same output format, so the rest of the pipeline is
+ *   identical.
+ */
+(function (AS) {
+  "use strict";
+
+  /** One line per field keeps the prompt small: names + short descriptions only, never data. */
+  function catalogText(catalog) {
+    return Object.keys(catalog).map(function (name) {
+      var v = catalog[name];
+      return "VIEW " + name + ": " + v.description + "\n  measures: " + v.measures.map(function (m) { return m.name + " (" + m.description + ")"; }).join("; ") +
+        "\n  dimensions: " + v.dimensions.map(function (d) { return d.name; }).join(", ");
+    }).join("\n");
+  }
+
+  function buildPrompt(catalog, request, current) {
+    return [
+      "You are a report planner for a restaurant analytics app.",
+      "Return ONLY a JSON report spec. Never write SQL. Never invent measures or dimensions.",
+      "Use only the views, measures and dimensions listed below. If something is not available, leave it out and add a short 'note'.",
+      "Block types: kpi, chart (line for trends over __time, bar for comparing categories, pie only for share of a few categories), table, join.",
+      "Use a 'join' block only when the request needs measures from two views; join on shared dimensions and add calc fields like profit = revenue - cost.",
+      "Prefer few, meaningful blocks: KPIs first, then 1-3 charts, then a table only if asked or useful for drill-down.",
+      "Date presets: " + AS.spec.PRESETS.join(", ") + ". Compare: previous_period, previous_week, previous_year or null.",
+      "",
+      "CATALOG",
+      catalogText(catalog),
+      current ? "\nCURRENT REPORT (edit this instead of starting over):\n" + JSON.stringify(current) : "",
+      "\nREQUEST\n" + request
+    ].join("\n");
+  }
+
+  /** Extract the first JSON object from an LLM reply (handles ```json fences). */
+  function parseReply(text) {
+    var t = String(text).replace(/```json|```/g, "");
+    var a = t.indexOf("{"), b = t.lastIndexOf("}");
+    if (a < 0 || b < a) throw new Error("The model did not return JSON");
+    return JSON.parse(t.slice(a, b + 1));
+  }
+
+  // ---------------- offline planner (demo) ----------------
+  var MEASURE_WORDS = [
+    [/profit|margin|food cost|recipe cost/, "__profit"],
+    [/revenue|sales|turnover|business/, "revenue"], [/\borders?\b|bills?|transactions/, "orders"], [/aov|average (order|bill|ticket)|avg (order|bill)/, "aov"],
+    [/discount/, "discount"], [/customers?/, "customers"], [/cancel/, "cancel_rate"],
+    [/items?|dish(es)?|products?|menu|qty|quantity|top selling|best selling/, "qty_sold"]
+  ];
+  var DIM_WORDS = [[/channel|aggregator|platform|source/, "channel"], [/branch(es)?|outlet|store|location/, "branch"], [/restaurant|brand/, "restaurant"], [/city|cities/, "city"],
+    [/payment|upi|card|cash/, "payment_method"], [/hour|peak|time of day/, "hour"], [/weekday|day of week|day-wise/, "weekday"], [/categor/, "category"], [/product|item|dish/, "product"]];
+
+  function offlinePlan(request, catalog) {
+    var q = " " + request.toLowerCase() + " ", s = { title: "", date_range: { preset: "last_30_days" }, compare: null, filters: [], blocks: [] };
+    // dates
+    [["yesterday", "yesterday"], ["today", "today"], ["last 7 days", "last_7_days"], ["last week", "last_7_days"], ["this week", "last_7_days"], ["last 14 days", "last_14_days"],
+      ["last 30 days", "last_30_days"], ["this month", "this_month"], ["last month", "last_month"], ["last 90 days", "last_90_days"], ["quarter", "last_90_days"]]
+      .forEach(function (p) { if (q.indexOf(p[0]) >= 0) s.date_range = { preset: p[1] }; });
+    // comparison
+    if (/vs|versus|compare|compared|growth|change|wow|mom/.test(q)) s.compare = /last year|yoy/.test(q) ? "previous_year" : /last week|wow/.test(q) && s.date_range.preset !== "last_7_days" ? "previous_week" : "previous_period";
+    // filters: any known dimension value mentioned in the text
+    ["channel", "branch", "restaurant", "city", "payment_method"].forEach(function (dim) {
+      var vals = AS.semantic.dimensionValues("orders", dim).filter(function (v) { return v && q.indexOf(" " + v.toLowerCase()) >= 0 && !new RegExp("by " + v.toLowerCase()).test(q); });
+      if (vals.length) s.filters.push({ dimension: dim, op: "in", values: vals });
+    });
+    var measures = []; MEASURE_WORDS.forEach(function (m) { if (m[0].test(q) && measures.indexOf(m[1]) < 0) measures.push(m[1]); });
+    var dims = []; DIM_WORDS.forEach(function (dw) { if (dw[0].test(q)) dims.push(dw[1]); });
+    var wantsTrend = /trend|daily|day by day|over time|weekly|monthly|by day|by week|by month/.test(q);
+    var grain = /monthly|by month/.test(q) ? "month" : /weekly|by week/.test(q) ? "week" : "day";
+    var chartType = /pie|share|split|mix/.test(q) ? "pie" : /line/.test(q) ? "line" : "bar";
+    var limit = (q.match(/top (\d+)/) || [])[1];
+
+    if (measures.indexOf("__profit") >= 0) {
+      var on = dims.indexOf("branch") >= 0 ? "branch" : dims.indexOf("category") >= 0 ? "category" : "product";
+      s.title = "Profit by " + on;
+      s.blocks.push({ type: "join", title: "Revenue vs food cost by " + on, left: { view: "item_sales", measures: ["item_revenue"] }, right: { view: "recipe_costs", measures: ["food_cost"] }, on: [on],
+        calc: [{ name: "profit", label: "Profit", expr: "item_revenue - food_cost", format: "currency" }, { name: "margin", label: "Margin %", expr: "(item_revenue - food_cost) / item_revenue", format: "percent" }],
+        sort: { by: "profit", desc: true }, limit: +limit || 15 });
+      return s;
+    }
+    var itemMode = measures.indexOf("qty_sold") >= 0 && !measures.some(function (m) { return ["revenue", "orders", "aov"].indexOf(m) >= 0 && !/items? revenue/.test(q); });
+    if (itemMode) {
+      var idim = dims.indexOf("category") >= 0 ? "category" : "product";
+      s.title = "Top selling " + (idim === "category" ? "categories" : "items");
+      s.blocks.push({ type: "kpi", view: "item_sales", measures: ["qty_sold", "item_revenue"] });
+      s.blocks.push({ type: "chart", view: "item_sales", chart: chartType === "pie" ? "pie" : "bar", measure: "qty_sold", dimension: idim, limit: +limit || 10 });
+      s.blocks.push({ type: "table", view: "item_sales", dimensions: [idim], measures: ["qty_sold", "item_revenue"], sort: { by: "qty_sold", desc: true }, limit: +limit || 20 });
+      return s;
+    }
+    measures = measures.filter(function (m) { return m !== "qty_sold"; });
+    if (!measures.length) measures = ["revenue", "orders", "aov"];
+    var main = measures[0], odims = dims.filter(function (x) { return ["category", "product"].indexOf(x) < 0; });
+    s.title = (catalog.orders.measures.filter(function (m) { return m.name === main; })[0] || { label: "Sales" }).label + (odims.length ? " by " + odims.join(" & ").replace("_", " ") : " overview");
+    s.blocks.push({ type: "kpi", view: "orders", measures: measures.length > 1 ? measures : [main, "orders", "aov"].filter(function (x, i, a) { return a.indexOf(x) === i; }) });
+    if (wantsTrend || !odims.length) s.blocks.push({ type: "chart", view: "orders", chart: "line", measure: main, dimension: "__time", grain: grain });
+    odims.forEach(function (dim) { s.blocks.push({ type: "chart", view: "orders", chart: dim === "hour" || dim === "weekday" ? "bar" : chartType, measure: main, dimension: dim, limit: +limit || 10 }); });
+    if (odims.length || /table|list|breakdown|detail/.test(q))
+      s.blocks.push({ type: "table", view: "orders", dimensions: odims.length ? odims.slice(0, 2) : ["branch"], measures: ["revenue", "orders", "aov"], sort: { by: main === "aov" ? "aov" : main, desc: true }, limit: +limit || 50 });
+    return s;
+  }
+
+  /**
+   * plan(request): uses the LLM if one is configured, otherwise the offline planner.
+   * `llm` is any async function(prompt) -> string (Claude, OpenAI, a proxy…).
+   */
+  var llm = null;
+  async function plan(request, catalog, current) {
+    if (llm) return { spec: parseReply(await llm(buildPrompt(catalog, request, current))), source: "llm" };
+    return { spec: offlinePlan(request, catalog), source: "offline" };
+  }
+
+  AS.planner = { plan: plan, buildPrompt: buildPrompt, catalogText: catalogText, parseReply: parseReply, offlinePlan: offlinePlan, setLLM: function (fn) { llm = fn; } };
+})(window.AS = window.AS || {});
+
+</script>
+<script>
+/**
+ * token-rules.js
+ * ------------------------------------------------------------------
+ * AI calls cost money and time. Most follow-up requests are small edits
+ * ("make it a pie", "top 5", "only Swiggy", "last month") that do not need
+ * a model at all. These rules apply such edits directly to the current spec.
+ *
+ *   localEdit(text, spec)  -> new spec, or null if the AI is really needed
+ *   planCache              -> identical requests reuse the previous plan
+ *
+ * In production this cut planner calls sharply: the model is only used for
+ * genuinely new reports or ambiguous requests.
+ */
+(function (AS) {
+  "use strict";
+  var stats = { localEdits: 0, cacheHits: 0, aiCalls: 0 };
+  var planCache = new Map();
+  function norm(t) { return t.toLowerCase().replace(/\s+/g, " ").trim(); }
+
+  function localEdit(text, spec) {
+    if (!spec) return null;
+    var q = norm(text), s = JSON.parse(JSON.stringify(spec)), changed = false;
+    // Only treat the text as an edit if, after removing known edit phrases,
+    // almost nothing is left. "Daily sales trend this month" is a NEW report,
+    // "this month" alone is an edit.
+    var rest = q.replace(/\b(make|it|a|an|the|to|as|into|chart|change|show|switch|please|and|vs|previous|period|year|instead)\b/g, " ")
+      .replace(/\b(pie|bar|line)\b|top \d+|yesterday|today|last (7|30|90) days|last week|this month|last month|compar\w*|no compar\w*|remove compar\w*|without compar\w*|clear filters|remove filters|all channels|all branches|^(only|just|filter) .+$/g, " ")
+      .trim();
+    if (rest.split(/\s+/).filter(Boolean).length > 0) return null;
+    var charts = s.blocks.filter(function (b) { return b.type === "chart"; });
+    var m;
+    if ((m = q.match(/\b(pie|bar|line)\b/)) && charts.length) {
+      var target = charts.filter(function (b) { return m[1] !== "pie" || b.dimension !== "__time"; })[0];
+      if (target) { target.chart = m[1]; changed = true; }
+    }
+    if ((m = q.match(/top (\d+)/))) { s.blocks.forEach(function (b) { if (b.type !== "kpi" && !(b.type === "chart" && b.dimension === "__time")) b.limit = +m[1]; }); changed = true; }
+    var presets = [["yesterday", "yesterday"], ["today", "today"], ["last 7 days", "last_7_days"], ["last week", "last_7_days"], ["this month", "this_month"], ["last month", "last_month"], ["last 30 days", "last_30_days"], ["last 90 days", "last_90_days"]];
+    presets.forEach(function (p) { if (q.indexOf(p[0]) >= 0 && !/vs|compare/.test(q)) { s.date_range = { preset: p[1] }; changed = true; } });
+    if (/compare|vs previous|vs last/.test(q)) { s.compare = /year/.test(q) ? "previous_year" : "previous_period"; changed = true; }
+    if (/no compar|remove compar|without compar/.test(q)) { s.compare = null; changed = true; }
+    if ((m = q.match(/^(only|just|filter) (.+)$/))) {
+      var val = m[2], hit = null;
+      ["channel", "branch", "restaurant", "city", "payment_method"].forEach(function (dim) {
+        AS.semantic.dimensionValues("orders", dim).forEach(function (v) { if (!hit && v.toLowerCase() === val) hit = { dimension: dim, op: "in", values: [v] }; });
+      });
+      if (hit) { s.filters = s.filters.filter(function (f) { return f.dimension !== hit.dimension; }).concat([hit]); changed = true; }
+    }
+    if (/clear filters|remove filters|all channels|all branches/.test(q)) { s.filters = []; changed = true; }
+    if (changed) stats.localEdits++;
+    return changed ? s : null;
+  }
+
+  function cacheKey(text, catalogVersion) { return catalogVersion + "::" + norm(text); }
+  function getCached(text, v) { var k = cacheKey(text, v); if (planCache.has(k)) { stats.cacheHits++; return planCache.get(k); } return null; }
+  function putCached(text, v, spec) { planCache.set(cacheKey(text, v), spec); }
+
+  AS.tokens = { localEdit: localEdit, getCached: getCached, putCached: putCached, stats: stats };
+})(window.AS = window.AS || {});
+
+</script>
+<script>
+/**
+ * engine.js
+ * ------------------------------------------------------------------
+ * Executes a validated spec: turns each block into semantic-layer queries,
+ * runs them (in parallel), adds comparison values, and returns render-ready
+ * results. No AI is involved here, so it is deterministic and free.
+ *
+ * Also contains the DEEP-DIVE JOIN: when a question needs measures from two
+ * metrics views (e.g. revenue from item_sales + cost from recipe_costs), the
+ * engine queries both at the shared grain, VERIFIES the join keys actually
+ * match, then merges and computes calculated fields null-safely.
+ */
+(function (AS) {
+  "use strict";
+
+  function baseArgs(view, spec, range, extra) {
+    var where = spec.filters.filter(function (f) { return AS.engine.viewHasDim(view, f.dimension); });
+    return Object.assign({ metrics_view: view, time_range: range, where: where }, extra);
+  }
+
+  var catalogRef = {};
+  function viewHasDim(view, dim) { var v = catalogRef[view]; return !!(v && v.dimensions.some(function (d) { return d.name === dim; })); }
+
+  async function runBlock(b, spec, range, cmp) {
+    if (b.type === "kpi") {
+      var args = baseArgs(b.view, spec, range, { measures: b.measures.map(function (m) { return { name: m }; }) });
+      var cur = await AS.data.query(args), prev = cmp ? await AS.data.query(Object.assign({}, args, { time_range: cmp })) : null;
+      return { values: cur.rows[0] || {}, previous: prev ? prev.rows[0] || {} : null };
+    }
+    if (b.type === "chart") {
+      var cargs = baseArgs(b.view, spec, range, { measures: [{ name: b.measure }], dimensions: [{ name: b.dimension }], time_grain: b.grain,
+        sort: b.dimension === "__time" ? [{ name: "__time" }] : [{ name: b.measure, desc: true }], limit: b.limit || undefined });
+      var res = await AS.data.query(cargs), out = { rows: res.rows };
+      if (cmp && b.dimension === "__time") { var p = await AS.data.query(Object.assign({}, cargs, { time_range: cmp })); out.previous = p.rows; }
+      return out;
+    }
+    if (b.type === "table") {
+      var targs = baseArgs(b.view, spec, range, { measures: b.measures.map(function (m) { return { name: m }; }), dimensions: b.dimensions.map(function (x) { return { name: x }; }),
+        sort: [{ name: b.sort.by, desc: b.sort.desc }], limit: b.limit });
+      var t = await AS.data.query(targs), tp = null;
+      if (cmp) { tp = await AS.data.query(Object.assign({}, targs, { time_range: cmp, limit: 1000 })); }
+      return { rows: t.rows, previous: tp ? tp.rows : null };
+    }
+    if (b.type === "join") return deepJoin(b, spec, range);
+    return null;
+  }
+
+  // ---------- deep-dive join ----------
+  function keyOf(row, on) { return on.map(function (k) { return String(row[k]).trim().toLowerCase(); }).join("|"); }
+
+  /** Evaluate "a - b" style expressions over a row. Any missing operand -> null (never treat missing as 0). */
+  function calc(expr, row) {
+    var missing = false;
+    var js = expr.replace(/[A-Za-z_]\w*/g, function (name) { var v = row[name]; if (v === null || v === undefined || Number.isNaN(v)) missing = true; return "(" + Number(v) + ")"; });
+    if (missing) return null;
+    try { var r = Function('"use strict";return (' + js + ")")(); return Number.isFinite(r) ? r : null; } catch (e) { return null; }
+  }
+
+  async function deepJoin(b, spec, range) {
+    var la = baseArgs(b.left.view, spec, range, { measures: b.left.measures.map(function (m) { return { name: m }; }), dimensions: b.on.map(function (k) { return { name: k }; }), limit: 5000 });
+    var ra = baseArgs(b.right.view, spec, range, { measures: b.right.measures.map(function (m) { return { name: m }; }), dimensions: b.on.map(function (k) { return { name: k }; }), limit: 5000 });
+    var L = (await AS.data.query(la)).rows, R = (await AS.data.query(ra)).rows;
+    // 1. verify keys: how many left keys exist on the right?
+    var rIdx = {}; R.forEach(function (r) { rIdx[keyOf(r, b.on)] = r; });
+    var matched = L.filter(function (l) { return rIdx[keyOf(l, b.on)]; }).length;
+    var matchRate = L.length ? matched / L.length : 0;
+    if (matchRate < 0.5) return { rows: [], join: { on: b.on, matchRate: matchRate, ok: false, message: "Join keys don't line up (" + Math.round(matchRate * 100) + "% match). Not merging, to avoid wrong numbers." } };
+    // 2. merge (left join) + calculated fields
+    var rows = L.map(function (l) {
+      var r = rIdx[keyOf(l, b.on)] || {}, row = Object.assign({}, l);
+      b.right.measures.forEach(function (m) { row[m] = r[m] === undefined ? null : r[m]; });
+      b.calc.forEach(function (c) { row[c.name] = calc(c.expr, row); });
+      return row;
+    });
+    if (b.sort) rows.sort(function (x, y) { var a = x[b.sort.by], c = y[b.sort.by]; if (a === null) return 1; if (c === null) return -1; return b.sort.desc ? c - a : a - c; });
+    return { rows: rows.slice(0, b.limit), join: { on: b.on, matchRate: matchRate, ok: true, matched: matched, total: L.length,
+      message: "Verified join on " + b.on.join(", ") + ": " + matched + " of " + L.length + " keys matched (" + Math.round(matchRate * 100) + "%). Unmatched rows show blank, not zero." } };
+  }
+
+  async function execute(spec, catalog, today) {
+    catalogRef = catalog;
+    var range = AS.spec.resolveRange(spec.date_range, today), cmp = AS.spec.compareRange(range, spec.compare);
+    var t0 = Date.now(), before = AS.data.stats.queries;
+    var results = await Promise.all(spec.blocks.map(function (b) { return runBlock(b, spec, range, cmp).catch(function (e) { return { error: e.message }; }); }));
+    return { range: range, compareRange: cmp, results: results, ms: Date.now() - t0, queries: AS.data.stats.queries - before };
+  }
+
+  AS.engine = { execute: execute, viewHasDim: viewHasDim, calc: calc };
+})(window.AS = window.AS || {});
+
+</script>
+<script>
+/**
+ * insights.js
+ * ------------------------------------------------------------------
+ * "What changed?" in plain language, computed from results the engine
+ * already fetched, so it needs no extra queries and no AI tokens.
+ *
+ *  - KPI movement vs the comparison period
+ *  - biggest movers inside a breakdown table (which branch/channel drove it)
+ *  - concentration (one item doing most of the volume)
+ *  - join health (unmatched keys)
+ */
+(function (AS) {
+  "use strict";
+  function pct(a, b) { return b ? (a - b) / Math.abs(b) : null; }
+
+  function generate(spec, run, catalog, fmt) {
+    var out = [];
+    spec.blocks.forEach(function (b, i) {
+      var r = run.results[i]; if (!r || r.error) return;
+      var view = catalog[b.view] || {}, label = function (m) { var x = (view.measures || []).filter(function (y) { return y.name === m; })[0]; return x ? x.label : m; };
+      if (b.type === "kpi" && r.previous) {
+        b.measures.forEach(function (m) {
+          var p = pct(r.values[m], r.previous[m]); if (p === null) return;
+          if (Math.abs(p) >= 0.03) out.push({ tone: p > 0 ? "up" : "down", text: label(m) + " is " + (p > 0 ? "up " : "down ") + Math.abs(p * 100).toFixed(1) + "% (" + fmt(r.values[m], AS.semantic.formats(b.view, m)) + " vs " + fmt(r.previous[m], AS.semantic.formats(b.view, m)) + ")." });
+        });
+      }
+      if (b.type === "table" && r.previous && b.dimensions.length === 1) {
+        var dim = b.dimensions[0], m0 = b.measures[0], prev = {};
+        r.previous.forEach(function (x) { prev[x[dim]] = x[m0]; });
+        var movers = r.rows.map(function (x) { return { k: x[dim], d: x[m0] - (prev[x[dim]] || 0) }; }).sort(function (a, c) { return Math.abs(c.d) - Math.abs(a.d); });
+        if (movers[0] && movers[0].d) out.push({ tone: movers[0].d > 0 ? "up" : "down", text: "Biggest driver: " + movers[0].k + " (" + (movers[0].d > 0 ? "+" : "") + fmt(movers[0].d, AS.semantic.formats(b.view, m0)) + " " + label(m0).toLowerCase() + ")." });
+      }
+      if (b.type === "chart" && b.dimension !== "__time" && r.rows.length > 2) {
+        var tot = r.rows.reduce(function (s, x) { return s + (x[b.measure] || 0); }, 0), top = r.rows[0];
+        if (tot && top[b.measure] / tot > 0.35) out.push({ tone: "info", text: top[b.dimension] + " alone is " + Math.round(top[b.measure] / tot * 100) + "% of " + label(b.measure).toLowerCase() + " in this view." });
+      }
+      if (b.type === "chart" && b.dimension === "__time" && r.rows.length > 6) {
+        var best = r.rows.reduce(function (a, x) { return x[b.measure] > a[b.measure] ? x : a; });
+        out.push({ tone: "info", text: "Best " + b.grain + ": " + best.__time + " with " + fmt(best[b.measure], AS.semantic.formats(b.view, b.measure)) + "." });
+      }
+      if (b.type === "join" && r.join) out.push({ tone: r.join.ok ? "info" : "down", text: r.join.message });
+    });
+    return out.slice(0, 6);
+  }
+  AS.insights = { generate: generate };
+})(window.AS = window.AS || {});
+
+</script>
+<script>
+/**
+ * render.js
+ * ------------------------------------------------------------------
+ * Draws engine results: KPI tiles with comparison deltas, SVG line / bar /
+ * pie charts, sortable tables, join tables with a verification note, and
+ * CSV export. Clicking a bar or pie slice drills down (adds a filter and
+ * re-runs the same spec, with no AI call).
+ */
+(function (AS) {
+  "use strict";
+  var PALETTE = ["#0f766e", "#c2410c", "#6d28d9", "#b45309", "#0369a1", "#be185d", "#4d7c0f", "#475569"];
+
+  function fmt(v, kind) {
+    if (v === null || v === undefined || Number.isNaN(v)) return "—";
+    if (kind === "percent") return (v * 100).toFixed(1) + "%";
+    var a = Math.abs(v), s;
+    if (kind === "currency") s = a >= 1e7 ? (a / 1e7).toFixed(2) + " Cr" : a >= 1e5 ? (a / 1e5).toFixed(2) + " L" : a >= 1e3 ? Math.round(a).toLocaleString("en-IN") : a.toFixed(0);
+    else s = a >= 1e5 ? (a / 1e5).toFixed(1) + " L" : Math.round(a).toLocaleString("en-IN");
+    return (v < 0 ? "-" : "") + (kind === "currency" ? "₹" : "") + s;
+  }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function label(catalog, view, m) { var v = catalog[view]; var x = v && v.measures.filter(function (y) { return y.name === m; })[0]; return x ? x.label : m; }
+  function delta(cur, prev) {
+    if (prev === null || prev === undefined || !prev) return "";
+    var p = (cur - prev) / Math.abs(prev); return '<span class="delta ' + (p >= 0 ? "up" : "down") + '">' + (p >= 0 ? "▲ " : "▼ ") + Math.abs(p * 100).toFixed(1) + "%</span>";
+  }
+
+  function kpis(b, r, catalog) {
+    return '<div class="kpis">' + b.measures.map(function (m) {
+      var f = AS.semantic.formats(b.view, m);
+      return '<div class="kpi"><div class="kl">' + esc(label(catalog, b.view, m)) + '</div><div class="kv">' + fmt(r.values[m], f) + "</div>" +
+        (r.previous ? '<div class="kd">' + delta(r.values[m], r.previous[m]) + ' <span class="muted">vs ' + fmt(r.previous[m], f) + "</span></div>" : "") + "</div>";
+    }).join("") + "</div>";
+  }
+
+  function lineChart(b, r) {
+    var rows = r.rows, prev = r.previous || [], W = 640, H = 220, P = { l: 52, r: 12, t: 12, b: 28 };
+    var vals = rows.map(function (x) { return x[b.measure] || 0; }), pv = prev.map(function (x) { return x[b.measure] || 0; });
+    var max = Math.max.apply(null, vals.concat(pv).concat([1])) * 1.1, n = Math.max(rows.length, 2);
+    var X = function (i) { return P.l + i * (W - P.l - P.r) / (n - 1); }, Y = function (v) { return H - P.b - v / max * (H - P.t - P.b); };
+    var path = function (arr) { return arr.map(function (v, i) { return (i ? "L" : "M") + X(i).toFixed(1) + "," + Y(v).toFixed(1); }).join(""); };
+    var grid = [0, .25, .5, .75, 1].map(function (g) { var v = max * g; return '<line x1="' + P.l + '" x2="' + (W - P.r) + '" y1="' + Y(v) + '" y2="' + Y(v) + '" class="grid"/><text x="' + (P.l - 6) + '" y="' + (Y(v) + 4) + '" class="ax" text-anchor="end">' + fmt(v, AS.semantic.formats(b.view, b.measure)).replace("₹", "") + "</text>"; }).join("");
+    var step = Math.ceil(rows.length / 6), xl = rows.map(function (x, i) { return i % step ? "" : '<text x="' + X(i) + '" y="' + (H - 8) + '" class="ax" text-anchor="middle">' + esc(String(x.__time).slice(5)) + "</text>"; }).join("");
+    return '<svg viewBox="0 0 ' + W + " " + H + '" class="chart" role="img">' + grid + xl +
+      (pv.length ? '<path d="' + path(pv) + '" class="prev"/>' : "") +
+      '<path d="' + path(vals) + "L" + X(vals.length - 1) + "," + Y(0) + "L" + X(0) + "," + Y(0) + 'Z" class="area"/><path d="' + path(vals) + '" class="line"/></svg>' +
+      (pv.length ? '<div class="legend"><span class="sw cur"></span>Current <span class="sw prv"></span>Comparison period</div>' : "");
+  }
+  function barChart(b, r) {
+    var rows = r.rows, max = Math.max.apply(null, rows.map(function (x) { return x[b.measure] || 0; }).concat([1]));
+    return '<div class="bars">' + rows.map(function (x) {
+      return '<button type="button" class="bar" data-drill="' + esc(b.dimension) + '" data-val="' + esc(x[b.dimension]) + '" title="Drill into ' + esc(x[b.dimension]) + '"><span class="bl">' + esc(x[b.dimension]) + '</span><span class="bt"><span class="bf" style="width:' + (100 * (x[b.measure] || 0) / max).toFixed(1) + '%"></span></span><span class="bv">' + fmt(x[b.measure], AS.semantic.formats(b.view, b.measure)) + "</span></button>";
+    }).join("") + "</div>";
+  }
+  function pieChart(b, r) {
+    var rows = r.rows, tot = rows.reduce(function (s, x) { return s + (x[b.measure] || 0); }, 0) || 1, a0 = -Math.PI / 2, cx = 110, cy = 110, R = 95, ri = 55;
+    var arcs = rows.map(function (x, i) {
+      var a1 = a0 + 2 * Math.PI * (x[b.measure] || 0) / tot, big = a1 - a0 > Math.PI ? 1 : 0;
+      var p = function (a, rr) { return (cx + rr * Math.cos(a)).toFixed(1) + "," + (cy + rr * Math.sin(a)).toFixed(1); };
+      var d = "M" + p(a0, R) + "A" + R + "," + R + " 0 " + big + " 1 " + p(a1, R) + "L" + p(a1, ri) + "A" + ri + "," + ri + " 0 " + big + " 0 " + p(a0, ri) + "Z";
+      a0 = a1; return '<path d="' + d + '" fill="' + PALETTE[i % PALETTE.length] + '" data-drill="' + esc(b.dimension) + '" data-val="' + esc(x[b.dimension]) + '" class="slice"><title>' + esc(x[b.dimension]) + "</title></path>";
+    }).join("");
+    var leg = rows.map(function (x, i) { return '<div><span class="sw" style="background:' + PALETTE[i % PALETTE.length] + '"></span>' + esc(x[b.dimension]) + ' <b>' + Math.round(100 * (x[b.measure] || 0) / tot) + "%</b></div>"; }).join("");
+    return '<div class="pie"><svg viewBox="0 0 220 220" class="donut">' + arcs + '</svg><div class="pleg">' + leg + "</div></div>";
+  }
+
+  function table(cols, rows, fmts, prevMap) {
+    return '<div class="tw"><table><thead><tr>' + cols.map(function (c, i) { return '<th data-sort="' + i + '">' + esc(c.label) + "</th>"; }).join("") + "</tr></thead><tbody>" +
+      rows.map(function (row) { return "<tr>" + cols.map(function (c) { var v = row[c.key]; return c.num ? '<td class="n" data-v="' + (v === null ? "" : v) + '">' + fmt(v, fmts[c.key]) + (prevMap && c.cmp ? " " + delta(v, (prevMap[row.__k] || {})[c.key]) : "") + "</td>" : "<td>" + esc(v) + "</td>"; }).join("") + "</tr>"; }).join("") +
+      "</tbody></table></div>";
+  }
+
+  function block(b, r, catalog) {
+    var title = b.title || "";
+    if (r && r.error) return card(title || b.type, '<div class="err">' + esc(r.error) + "</div>");
+    if (b.type === "kpi") return kpis(b, r, catalog);
+    if (b.type === "chart") {
+      title = title || label(catalog, b.view, b.measure) + (b.dimension === "__time" ? " trend (" + b.grain + ")" : " by " + b.dimension.replace("_", " "));
+      return card(title, b.chart === "line" ? lineChart(b, r) : b.chart === "pie" ? pieChart(b, r) : barChart(b, r), b);
+    }
+    if (b.type === "table") {
+      var cols = b.dimensions.map(function (d) { return { key: d, label: d.replace("_", " ") }; }).concat(b.measures.map(function (m) { return { key: m, label: label(catalog, b.view, m), num: true, cmp: true }; }));
+      var fm = {}; b.measures.forEach(function (m) { fm[m] = AS.semantic.formats(b.view, m); });
+      var pm = null; if (r.previous) { pm = {}; r.previous.forEach(function (x) { pm[b.dimensions.map(function (d) { return x[d]; }).join("|")] = x; }); }
+      r.rows.forEach(function (x) { x.__k = b.dimensions.map(function (d) { return x[d]; }).join("|"); });
+      return card(title || "Breakdown by " + b.dimensions.join(", ").replace("_", " "), table(cols, r.rows, fm, pm), b);
+    }
+    if (b.type === "join") {
+      var jc = b.on.map(function (d) { return { key: d, label: d }; })
+        .concat(b.left.measures.map(function (m) { return { key: m, label: label(catalog, b.left.view, m), num: true }; }))
+        .concat(b.right.measures.map(function (m) { return { key: m, label: label(catalog, b.right.view, m), num: true }; }))
+        .concat(b.calc.map(function (c) { return { key: c.name, label: c.label || c.name, num: true }; }));
+      var jf = {}; b.left.measures.forEach(function (m) { jf[m] = AS.semantic.formats(b.left.view, m); }); b.right.measures.forEach(function (m) { jf[m] = AS.semantic.formats(b.right.view, m); }); b.calc.forEach(function (c) { jf[c.name] = c.format || "currency"; });
+      return card(title || "Joined analysis", '<div class="joinnote ' + (r.join && r.join.ok ? "ok" : "bad") + '">' + esc(r.join ? r.join.message : "") + "</div>" + table(jc, r.rows, jf), b);
+    }
+    return "";
+  }
+  function card(title, body, b) { return '<section class="card"><header><h3>' + esc(title) + '</h3>' + (b && b.type !== "kpi" ? '<button type="button" class="ghost csv">CSV</button>' : "") + "</header>" + body + "</section>"; }
+
+  function report(el, spec, run, catalog) {
+    el.innerHTML = spec.blocks.map(function (b, i) { return '<div class="blk" data-i="' + i + '">' + block(b, run.results[i], catalog) + "</div>"; }).join("");
+    // sortable tables
+    el.querySelectorAll("th[data-sort]").forEach(function (th) {
+      th.onclick = function () {
+        var tb = th.closest("table").tBodies[0], i = +th.dataset.sort, asc = th.dataset.dir !== "asc"; th.dataset.dir = asc ? "asc" : "desc";
+        [].slice.call(tb.rows).sort(function (a, c) { var x = a.cells[i].dataset.v !== undefined ? +a.cells[i].dataset.v : a.cells[i].textContent, y = c.cells[i].dataset.v !== undefined ? +c.cells[i].dataset.v : c.cells[i].textContent; return (x > y ? 1 : x < y ? -1 : 0) * (asc ? 1 : -1); }).forEach(function (r) { tb.appendChild(r); });
+      };
+    });
+  }
+
+  function toCSV(rows) {
+    if (!rows || !rows.length) return "";
+    var cols = Object.keys(rows[0]).filter(function (k) { return k !== "__k"; });
+    return cols.join(",") + "\n" + rows.map(function (r) { return cols.map(function (c) { var v = r[c]; return v === null || v === undefined ? "" : /[",\n]/.test(String(v)) ? '"' + String(v).replace(/"/g, '""') + '"' : v; }).join(","); }).join("\n");
+  }
+
+  AS.render = { report: report, fmt: fmt, toCSV: toCSV };
+})(window.AS = window.AS || {});
+
+</script>
+<script>
+/**
+ * app.js
+ * ------------------------------------------------------------------
+ * The Studio UI: pinned filter bar, requirement box, live preview,
+ * file export, scheduling, dashboards, prompt history and the assistant.
+ *
+ * Pipeline for every request:
+ *   request ─▶ token rules (local edit? cached plan?) ─▶ planner (AI)
+ *           ─▶ validate against catalog ─▶ merge pinned filters
+ *           ─▶ execute queries ─▶ insights ─▶ render
+ */
+(function (AS) {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+  var TODAY = AS.semantic.DATA_END, CATALOG_VERSION = "v1", catalog = {}, current = null, lastRun = null, lastTrace = [], fileType = "csv";
+  var DATE_WORDS = /yesterday|today|last 7 days|last week|this week|last 14 days|last 30 days|this month|last month|last 90 days|quarter/i;
+  var COMPARE_WORDS = /\bvs\b|versus|compare|growth|change|wow|mom|yoy/i;
+
+  // ---------- small helpers ----------
+  function store(k, v) { try { if (v === undefined) return JSON.parse(localStorage.getItem("as-" + k) || "null"); localStorage.setItem("as-" + k, JSON.stringify(v)); } catch (e) { return null; } }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function toast(t) { var el = $("toast"); el.textContent = t; el.classList.add("on"); clearTimeout(toast.t); toast.t = setTimeout(function () { el.classList.remove("on"); }, 1800); }
+  function opts(sel, label, values) { sel.innerHTML = '<option value="">All ' + label + "</option>" + values.sort().map(function (v) { return '<option value="' + esc(v) + '">' + esc(v) + "</option>"; }).join(""); }
+  function download(name, text, type) { var a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([text], { type: type })); a.download = name; document.body.appendChild(a); a.click(); a.remove(); }
+
+  // ---------- pinned filter bar ----------
+  var BRANCHES_BY_REST = {};
+  function initFilters() {
+    AS.semantic.dimensionValues("orders", "branch").forEach(function (b) { });
+    var rows = AS.semantic.queryMetricsView({ metrics_view: "orders", dimensions: [{ name: "restaurant" }, { name: "branch" }], measures: [{ name: "orders" }] }).rows;
+    rows.forEach(function (r) { (BRANCHES_BY_REST[r.restaurant] = BRANCHES_BY_REST[r.restaurant] || []).push(r.branch); });
+    opts($("fRestaurant"), "restaurants", Object.keys(BRANCHES_BY_REST));
+    opts($("fBranch"), "branches", AS.semantic.dimensionValues("orders", "branch"));
+    opts($("fChannel"), "channels", AS.semantic.dimensionValues("orders", "channel"));
+    $("fRestaurant").onchange = function () { var r = this.value; opts($("fBranch"), "branches", r ? BRANCHES_BY_REST[r].slice() : AS.semantic.dimensionValues("orders", "branch")); rerun(); };
+    ["fBranch", "fChannel", "fDate"].forEach(function (id) { $(id).onchange = rerun; });
+  }
+  function pinned() {
+    var f = [];
+    [["fRestaurant", "restaurant"], ["fBranch", "branch"], ["fChannel", "channel"]].forEach(function (p) { if ($(p[0]).value) f.push({ dimension: p[1], op: "in", values: [$(p[0]).value], pinned: true }); });
+    return f;
+  }
+  function applyPinned(spec) {
+    var pins = pinned(), dims = pins.map(function (p) { return p.dimension; });
+    spec.filters = (spec.filters || []).filter(function (f) { return !f.pinned && dims.indexOf(f.dimension) < 0; }).concat(pins);
+    spec.date_range = { preset: $("fDate").value };
+    spec.compare = $("compare").value || null;
+    return spec;
+  }
+  function syncBarFrom(spec, text) {
+    // dates / compare / bar filters mentioned in the prompt move into the pinned controls
+    if (text && DATE_WORDS.test(text) && spec.date_range && spec.date_range.preset) { var o = $("fDate").querySelector('option[value="' + spec.date_range.preset + '"]'); if (o) $("fDate").value = spec.date_range.preset; }
+    if (text && COMPARE_WORDS.test(text)) $("compare").value = spec.compare || "";
+    spec.filters = (spec.filters || []).filter(function (f) {
+      var id = { restaurant: "fRestaurant", branch: "fBranch", channel: "fChannel" }[f.dimension];
+      if (id && f.values.length === 1 && $(id).querySelector('option[value="' + f.values[0] + '"]')) { $(id).value = f.values[0]; return false; }
+      return true;
+    });
+  }
+
+  // ---------- build ----------
+  function step(n, name, detail, ms) { return '<div class="step"><b>' + n + "</b><div><div>" + name + '</div><div class="t">' + detail + '</div></div><span class="t">' + (ms != null ? ms + " ms" : "") + "</span></div>"; }
+
+  async function build(text) {
+    text = (text || "").trim(); if (!text) { toast("Describe the report first"); return null; }
+    var t0 = performance.now(), how, raw;
+    var local = AS.tokens.localEdit(text, current), cached = !local && AS.tokens.getCached(text, CATALOG_VERSION);
+    if (local) { raw = local; how = "Local edit, no AI call"; }
+    else if (cached) { raw = JSON.parse(JSON.stringify(cached)); how = "Cached plan, no AI call"; }
+    else { var p = await AS.planner.plan(text, catalog, null); raw = p.spec; how = p.source === "llm" ? "AI planner" : "Offline planner (demo mode)"; AS.tokens.stats.aiCalls++; AS.tokens.putCached(text, CATALOG_VERSION, raw); }
+    var t1 = performance.now();
+    var v = AS.spec.validate(raw, catalog), t2 = performance.now();
+    lastTrace = [step(1, "Plan", how, Math.round(t1 - t0)),
+      step(2, "Validate against semantic layer", v.errors.length ? v.errors.length + " error(s)" : v.warnings.length ? v.warnings.length + " repair(s)" : "All fields exist", Math.round(t2 - t1))];
+    if (!v.spec.blocks.length) { $("preview").innerHTML = '<div class="warn">' + esc(v.errors.concat(v.warnings).join(" · ") || "Nothing to show") + "</div>"; return null; }
+    if (!local) syncBarFrom(v.spec, text);
+    current = v.spec; current._warnings = v.errors.concat(v.warnings);
+    pushHistory(text);
+    await runSpec(how);
+    return { how: how, spec: current };
+  }
+
+  async function runSpec(how) {
+    if (!current) return;
+    applyPinned(current);
+    var t2 = performance.now(), run = await AS.engine.execute(current, catalog, TODAY), t3 = performance.now(); lastRun = run;
+    var ins = AS.insights.generate(current, run, catalog, AS.render.fmt), t4 = performance.now();
+    var trace = (how ? lastTrace : lastTrace.slice(0, 1).map(function () { return step(1, "Plan", "Re-run of saved spec, no AI call", 0); }))
+      .concat([step(3, "Query metrics views", run.queries + " queries · " + AS.data.stats.cacheHits + " cache hits this session", Math.round(t3 - t2)),
+        step(4, "Insights + render", ins.length + " insights · " + current.blocks.length + " blocks", Math.round(t4 - t3)),
+        step("∑", "AI usage this session", AS.tokens.stats.aiCalls + " planner calls · " + AS.tokens.stats.localEdits + " local edits · " + AS.tokens.stats.cacheHits + " cached plans", null)]);
+    var filters = current.filters.map(function (f, i) { return '<span class="pill">' + esc(f.dimension.replace("_", " ")) + ": " + esc(f.values.join(", ")) + (f.pinned ? "" : '<button type="button" data-rm="' + i + '" aria-label="Remove">×</button>') + "</span>"; }).join("");
+    var cleanSpec = JSON.parse(JSON.stringify(current)); delete cleanSpec._warnings;
+    $("preview").innerHTML =
+      '<div class="rtitle"><h3>' + esc(current.title) + "</h3><span>" + run.range.start + " → " + run.range.end + " (end excluded)" + (run.compareRange ? " · vs " + run.compareRange.start + " → " + run.compareRange.end : "") + "</span></div>" +
+      (filters ? '<div class="active">' + filters + "</div>" : "") +
+      (current._warnings || []).map(function (w) { return '<div class="warn">' + esc(w) + "</div>"; }).join("") +
+      (ins.length ? '<div class="ins"><b>What changed</b><ul>' + ins.map(function (i) { return '<li class="' + i.tone + '">' + esc(i.text) + "</li>"; }).join("") + "</ul></div>" : "") +
+      '<div id="report"></div>' +
+      '<div class="pv-tools"><button class="btn" type="button" id="toDash">＋ Add to dashboard</button><button class="btn" type="button" id="toSched">🗓 Schedule</button><button class="btn" type="button" id="toFile">⬇ Export</button></div>' +
+      '<details class="how"><summary>How this report was built (pipeline, report spec, planner prompt)</summary><div class="steps">' + trace.join("") + '</div><b style="font-size:13px">Report spec (the only thing the AI produces)</b><pre class="spec">' + esc(JSON.stringify(cleanSpec, null, 2)) +
+      '</pre><b style="font-size:13px">Planner prompt (catalog only, never data)</b><pre class="spec">' + esc(AS.planner.buildPrompt(catalog, "<your request>")) + "</pre></details>";
+    AS.render.report($("report"), current, run, catalog);
+    layout();
+    $("toDash").onclick = saveDashboard; $("toSched").onclick = function () { $("c4").scrollIntoView({ behavior: "smooth" }); };
+    $("toFile").onclick = function () { $("c3").scrollIntoView({ behavior: "smooth" }); };
+    $("preview").querySelectorAll("[data-rm]").forEach(function (b) { b.onclick = function () { current.filters.splice(+b.dataset.rm, 1); runSpec(); }; });
+    $("download").disabled = false;
+    $("sReports").innerHTML = esc(current.title) + ' <span class="muted">(' + current.blocks.length + " blocks)</span>";
+    planned();
+  }
+  function rerun() { if (current) runSpec(); }
+
+  function layout() {
+    var rep = $("report"), grid = null;
+    [].slice.call(rep.children).forEach(function (el) {
+      var b = current.blocks[+el.dataset.i];
+      if (b.type === "chart" && b.dimension !== "__time") { if (!grid) { grid = document.createElement("div"); grid.className = "grid2"; rep.insertBefore(grid, el); } grid.appendChild(el); }
+      else grid = null;
+    });
+    rep.style.cssText = "display:flex;flex-direction:column;gap:14px";
+  }
+
+  // ---------- drill-down & block CSV ----------
+  document.addEventListener("click", function (e) {
+    var d = e.target.closest("[data-drill]");
+    if (d && current) {
+      var dim = d.dataset.drill, val = d.dataset.val, id = { restaurant: "fRestaurant", branch: "fBranch", channel: "fChannel" }[dim];
+      if (id) { if (id === "fRestaurant") $("fRestaurant").onchange.call({ value: val }); $(id).value = val; }
+      else current.filters = current.filters.filter(function (f) { return f.dimension !== dim; }).concat([{ dimension: dim, op: "in", values: [val] }]);
+      toast("Drilled into " + val + " (no AI call)"); runSpec(); return;
+    }
+    var c = e.target.closest(".csv");
+    if (c && lastRun) { var i = +c.closest(".blk").dataset.i; download(slug() + "_" + (i + 1) + ".csv", AS.render.toCSV(lastRun.results[i].rows), "text/csv"); }
+  });
+  function slug() { return (current && current.title || "report").replace(/\W+/g, "_"); }
+
+  // ---------- file types ----------
+  var TYPES = [["excel", "Excel", ".xls, one table per report"], ["csv", "CSV", ".csv, all reports in one file"], ["powerbi", "Power BI", ".xlsx data, ready for Get Data"],
+    ["pdf", "PDF", ".pdf with charts and tables"], ["html", "Web page", ".html with charts"], ["json", "JSON", ".json for systems"]];
+  function initTypes() {
+    $("types").innerHTML = TYPES.map(function (t) { return '<button type="button" class="type' + (t[0] === fileType ? " on" : "") + '" data-t="' + t[0] + '"><b>' + t[1] + "</b><small>" + t[2] + "</small></button>"; }).join("");
+    $("types").querySelectorAll(".type").forEach(function (b) { b.onclick = function () { fileType = b.dataset.t; initTypes(); }; });
+  }
+  $("download").onclick = function () {
+    if (!lastRun) return;
+    var blocks = current.blocks.map(function (b, i) { return { title: b.title || b.type + " " + (i + 1), rows: lastRun.results[i].rows || [lastRun.results[i].values] }; });
+    if (fileType === "csv") download(slug() + ".csv", blocks.map(function (b) { return "# " + b.title + "\n" + AS.render.toCSV(b.rows); }).join("\n\n"), "text/csv");
+    else if (fileType === "json") download(slug() + ".json", JSON.stringify({ spec: current, range: lastRun.range, blocks: blocks }, null, 2), "application/json");
+    else if (fileType === "excel") download(slug() + ".xls", "<html><meta charset='utf-8'><body>" + blocks.map(function (b) { var r = b.rows.filter(Boolean); if (!r.length) return ""; var cols = Object.keys(r[0]).filter(function (k) { return k !== "__k"; }); return "<h3>" + esc(b.title) + "</h3><table border='1'><tr>" + cols.map(function (c) { return "<th>" + esc(c) + "</th>"; }).join("") + "</tr>" + r.map(function (x) { return "<tr>" + cols.map(function (c) { return "<td>" + esc(x[c] == null ? "" : x[c]) + "</td>"; }).join("") + "</tr>"; }).join("") + "</table>"; }).join("") + "</body></html>", "application/vnd.ms-excel");
+    else if (fileType === "html") download(slug() + ".html", "<!doctype html><meta charset='utf-8'><title>" + esc(current.title) + "</title><style>" + document.querySelector("style").textContent + "</style><body style='padding:24px'>" + $("preview").innerHTML.replace(/<details[\s\S]*<\/details>/, "") + "</body>", "text/html");
+    else toast("PDF and Power BI exports are part of the production build");
+  };
+
+  // ---------- schedule ----------
+  var repeat = "Once";
+  $("sRepeat").querySelectorAll("button").forEach(function (b) { b.onclick = function () { $("sRepeat").querySelectorAll("button").forEach(function (x) { x.classList.toggle("on", x === b); }); repeat = b.textContent; planned(); }; });
+  ["sTime", "sTz", "sAs", "sDates"].forEach(function (id) { $(id).onchange = planned; });
+  function planned() { $("planned").textContent = current ? "Planned: " + repeat.toLowerCase() + " at " + $("sTime").value + " " + $("sTz").value.split(" ")[0] + " · " + $("sAs").value : ""; }
+  $("saveSched").onclick = function () {
+    if (!current) { toast("Build a preview first"); return; }
+    var list = store("schedules") || [];
+    list.unshift({ title: current.title, repeat: repeat, time: $("sTime").value, tz: $("sTz").value, as: $("sAs").value, to: $("sTo").value, spec: current, saved: new Date().toISOString().slice(0, 16).replace("T", " ") });
+    store("schedules", list.slice(0, 20)); paintSaved(); toast("Schedule saved");
+  };
+  function paintSaved() {
+    var list = store("schedules") || [], el = $("savedList");
+    el.hidden = !list.length;
+    el.innerHTML = "<b style='font-size:13px'>Saved schedules</b>" + list.map(function (s, i) { return '<div class="it"><span>' + esc(s.title) + ' · <span class="muted">' + esc(s.repeat + " " + s.time + " · " + s.as) + '</span></span><button class="btn" type="button" data-del="' + i + '">Remove</button></div>'; }).join("");
+    el.querySelectorAll("[data-del]").forEach(function (b) { b.onclick = function () { var l = store("schedules") || []; l.splice(+b.dataset.del, 1); store("schedules", l); paintSaved(); }; });
+  }
+
+  // ---------- dashboards, history, drawer ----------
+  function saveDashboard() {
+    if (!current) { toast("Build a preview first"); return; }
+    var d = store("dashboards") || []; d.unshift({ title: current.title, spec: current }); store("dashboards", d.slice(0, 30)); toast("Added to dashboard"); paintDrawer();
+  }
+  function pushHistory(t) { var h = store("history") || []; h = [t].concat(h.filter(function (x) { return x !== t; })).slice(0, 15); store("history", h); }
+  function paintDrawer() {
+    var d = store("dashboards") || [], s = store("schedules") || [], h = store("history") || [];
+    $("dList").innerHTML = d.length ? d.map(function (x, i) { return '<div class="it"><span>' + esc(x.title) + '</span><button type="button" data-open="' + i + '">Open</button></div>'; }).join("") : '<div class="muted">No saved reports yet.</div>';
+    $("schList").innerHTML = s.length ? s.map(function (x) { return '<div class="it"><span>' + esc(x.title) + '</span><span class="muted">' + esc(x.repeat + " " + x.time) + "</span></div>"; }).join("") : '<div class="muted">None.</div>';
+    $("hList").innerHTML = h.length ? h.map(function (x, i) { return '<div class="it"><span>' + esc(x) + '</span><button type="button" data-hist="' + i + '">Use</button></div>'; }).join("") : '<div class="muted">Empty.</div>';
+    $("dList").querySelectorAll("[data-open]").forEach(function (b) { b.onclick = function () { current = JSON.parse(JSON.stringify(d[+b.dataset.open].spec)); $("drawer").hidden = true; runSpec(); toast("Opened from dashboard (no AI call)"); }; });
+    $("hList").querySelectorAll("[data-hist]").forEach(function (b) { b.onclick = function () { $("prompt").value = h[+b.dataset.hist]; $("drawer").hidden = true; current = null; build($("prompt").value); }; });
+  }
+  $("menuBtn").onclick = function () { paintDrawer(); $("drawer").hidden = false; };
+  $("closeDrawer").onclick = function () { $("drawer").hidden = true; };
+  $("histBtn").onclick = function () { paintDrawer(); $("drawer").hidden = false; };
+  $("saveDash").onclick = saveDashboard;
+
+  // ---------- assistant ----------
+  $("fab").onclick = function () { $("chat").hidden = !$("chat").hidden; if (!$("chat").hidden) $("chatIn").focus(); };
+  $("closeChat").onclick = function () { $("chat").hidden = true; };
+  function say(t, who) { var m = document.createElement("div"); m.className = "bub " + who; m.textContent = t; $("msgs").appendChild(m); $("msgs").scrollTop = 1e6; }
+  $("chatForm").onsubmit = async function (e) {
+    e.preventDefault(); var t = $("chatIn").value.trim(); if (!t) return; $("chatIn").value = ""; say(t, "me");
+    if (/save|dashboard/i.test(t) && current) { saveDashboard(); say("Saved “" + current.title + "” to your dashboards.", "bot"); return; }
+    if (/schedule|send every|every (day|monday|week)/i.test(t)) { $("c4").scrollIntoView({ behavior: "smooth" }); say("Opened Schedule and send. Pick the delivery and time, then Save schedule.", "bot"); return; }
+    var r = await build(t);
+    say(r ? "Built “" + r.spec.title + "” with " + r.spec.blocks.length + " blocks (" + r.how.toLowerCase() + ")." : "I couldn't build that from the available data. Try naming a measure like revenue, orders or items.", "bot");
+    $("c2").scrollIntoView({ behavior: "smooth" });
+  };
+
+  // ---------- requirement box ----------
+  var EXAMPLES = ["Branch-wise sales", "Daily sales trend", "Top 10 selling items", "Sales by channel vs previous period", "Payment method split pie", "Orders by hour of day", "Profit by product"];
+  $("examples").innerHTML = EXAMPLES.map(function (t) { return '<button type="button" class="chip">' + t + "</button>"; }).join("");
+  $("examples").querySelectorAll(".chip").forEach(function (b) { b.onclick = function () { $("prompt").value = b.textContent; current = null; build(b.textContent); }; });
+  $("go").onclick = function () { build($("prompt").value); };
+  $("prompt").addEventListener("keydown", function (e) { if ((e.metaKey || e.ctrlKey) && e.key === "Enter") $("go").click(); });
+  $("file").onchange = function () { var f = this.files[0]; if (!f) return; var r = new FileReader(); r.onload = function () { $("prompt").value = String(r.result).slice(0, 2000); toast("Loaded " + f.name); }; r.readAsText(f); };
+  $("compare").onchange = rerun;
+  $("theme").onchange = function () { $("preview").className = this.value ? "t-" + this.value : ""; };
+  $("themeBtn").onclick = function () { var d = document.documentElement; d.dataset.theme = d.dataset.theme === "dark" ? "" : "dark"; store("theme", d.dataset.theme); };
+  $("refresh").onclick = function () { rerun(); toast("Refreshed"); };
+  if (store("theme") === "dark") document.documentElement.dataset.theme = "dark";
+
+  // ---------- boot ----------
+  (async function () {
+    var views = await AS.data.listViews();
+    for (var i = 0; i < views.length; i++) catalog[views[i].name] = await AS.data.describe(views[i].name);
+    initFilters(); initTypes(); paintSaved();
+    $("prompt").value = "Sales by channel vs previous period";
+    build($("prompt").value);
+  })();
+  AS.app = { build: build, catalog: catalog };
+})(window.AS = window.AS || {});
+
+</script>
+</body>
+</html>
