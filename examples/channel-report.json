@@ -1,0 +1,11 @@
+{
+  "title": "Revenue by channel",
+  "date_range": { "preset": "last_30_days" },
+  "compare": "previous_period",
+  "filters": [],
+  "blocks": [
+    { "type": "kpi", "view": "orders", "measures": ["revenue", "orders", "aov"] },
+    { "type": "chart", "view": "orders", "chart": "bar", "measure": "revenue", "dimension": "channel", "limit": 10 },
+    { "type": "table", "view": "orders", "dimensions": ["channel"], "measures": ["revenue", "orders", "aov"], "sort": { "by": "revenue", "desc": true }, "limit": 50 }
+  ]
+}

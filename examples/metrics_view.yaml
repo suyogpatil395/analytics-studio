@@ -1,0 +1,52 @@
+# An AI-ready metrics view: clear names, a description on everything,
+# business rules inside measures, consistent join keys and row-level security.
+version: 1
+type: metrics_view
+display_name: Orders
+description: >
+  Bill-level sales. One row = one bill. Use for revenue, orders, average order value,
+  discounts, customers, channels, branches and hours of day.
+model: orders_enriched
+timeseries: order_ts
+smallest_time_grain: hour
+
+dimensions:
+  - name: restaurant
+    display_name: Restaurant
+    description: Restaurant brand
+    column: restaurant_name
+  - name: branch                # same name and values in item_sales and recipe_costs -> joinable
+    display_name: Branch
+    description: Outlet name
+    column: branch_name
+  - name: channel
+    display_name: Channel
+    description: Dine-in, Takeaway, Swiggy or Zomato
+    column: channel
+  - name: hour
+    display_name: Hour of day
+    column: order_hour
+
+measures:
+  - name: revenue
+    display_name: Revenue
+    description: Net sales of completed bills (after discount, incl. tax)
+    expression: SUM(CASE WHEN status = 'completed' THEN net_amount ELSE 0 END)
+    format_preset: humanize
+  - name: orders
+    display_name: Orders
+    description: Number of completed bills
+    expression: COUNT(DISTINCT CASE WHEN status = 'completed' THEN order_id END)
+  - name: aov
+    display_name: Avg order value
+    description: Revenue divided by orders
+    expression: SUM(CASE WHEN status = 'completed' THEN net_amount ELSE 0 END) / NULLIF(COUNT(DISTINCT CASE WHEN status = 'completed' THEN order_id END), 0)
+  - name: cancel_rate
+    display_name: Cancellation rate
+    description: Cancelled bills as a share of all bills
+    expression: AVG(CASE WHEN status = 'cancelled' THEN 1.0 ELSE 0 END)
+    format_preset: percentage
+
+security:
+  access: true
+  row_filter: "restaurant_id = {{ .user.restaurant_id }}"

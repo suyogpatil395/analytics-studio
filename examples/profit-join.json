@@ -1,0 +1,21 @@
+{
+  "title": "Profit by product",
+  "date_range": { "preset": "last_30_days" },
+  "compare": null,
+  "filters": [],
+  "blocks": [
+    {
+      "type": "join",
+      "title": "Revenue vs food cost by product",
+      "left":  { "view": "item_sales",   "measures": ["item_revenue"] },
+      "right": { "view": "recipe_costs", "measures": ["food_cost"] },
+      "on": ["product"],
+      "calc": [
+        { "name": "profit", "label": "Profit",   "expr": "item_revenue - food_cost", "format": "currency" },
+        { "name": "margin", "label": "Margin %", "expr": "(item_revenue - food_cost) / item_revenue", "format": "percent" }
+      ],
+      "sort": { "by": "profit", "desc": true },
+      "limit": 15
+    }
+  ]
+}
