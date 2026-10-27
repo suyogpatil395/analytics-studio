@@ -94,6 +94,10 @@ A client types *“Revenue by channel for the last 30 days vs previous period”
 
 <img src="docs/images/architecture.png" alt="Architecture: user → studio app (token rules, AI planner, validator, engine, deep-dive, insights, renderer, delivery) → MCP → data platform (metrics views, SQL models, sources)" width="100%">
 
+<img src="docs/images/architecture-flow.gif" alt="Animated architecture: a new report goes through token rules, one LLM call, validator, engine, MCP and metrics views with RLS, then deep-dive, insights, renderer and delivery; a small edit and a drill-down skip the LLM with 0 AI calls" width="100%">
+
+<sub>Animated: the same architecture with three requests flowing through it. A new report uses one AI call; a small edit ("make it a pie") and a drill-down use none.</sub>
+
 **Three responsibilities, cleanly separated:**
 
 | Layer | Decides | Owned by |
@@ -138,6 +142,10 @@ sequenceDiagram
     U->>R: click a bar (drill-down)
     R->>E: same spec + filter (no AI call)
 ```
+
+<img src="docs/images/request-walkthrough.gif" alt="Inside one request: the compact catalog sent to the LLM, the JSON report spec it returns, the validator checks, and the five parallel MCP queries with the rendered result" width="100%">
+
+<sub>One request end to end, using the real output of this repo's planner, validator and engine on the demo data: what the LLM receives, the spec it returns, the checks, and the 5 parallel queries.</sub>
 
 | # | Step | What happens | AI used? |
 |---|---|---|---|
@@ -379,6 +387,10 @@ security:
 ## 🖼️ Screenshots
 
 All screenshots come from this repository's demo on synthetic data.
+
+<img src="docs/images/demo-walkthrough.gif" alt="Demo recording: typing a requirement, building the preview, changing it to a pie and filtering to Swiggy through the assistant, then a channel report with comparison and the export options" width="100%">
+
+<sub>Screen recording of <code>analytics-studio-demo.html</code>: build a report from a sentence, edit it in plain words ("make it a pie", "only Swiggy") with no AI call, then a comparison report and export.</sub>
 
 | Revenue by channel, vs previous period | Profit by product (verified join) |
 |---|---|
